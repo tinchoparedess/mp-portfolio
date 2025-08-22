@@ -12,9 +12,8 @@ export default function Page() {
 
       {/* HERO */}
       <section className="text-center space-y-6">
-        <h1 className={`${playfair.className} text-4xl sm:text-5xl font-bold text-neutral-900`}>
-          Tarjeta digital minimalista
-        </h1>
+      <h1 className="text-5xl font-bold text-red-500">TEST ROJO</h1>
+
         <p className="text-neutral-700">
           (Placeholder) Tu frase de presentación irá acá.
         </p>
