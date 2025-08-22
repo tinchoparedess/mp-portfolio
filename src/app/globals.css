@@ -69,3 +69,64 @@
   }
   .nav-link:hover::after { width: 100%; }
 }
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Tema base ===== */
+:root {
+  --gold: #C8A951;      /* dorado suave */
+  --black: #111111;     /* negro profundo */
+}
+
+@layer base {
+  html, body {
+    @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100;
+  }
+  ::selection {
+    background: #f5ecd2; /* guiño dorado */
+    color: var(--black);
+  }
+}
+
+/* ===== Utilidades elegantes ===== */
+@layer components {
+  .container { @apply mx-auto max-w-4xl px-6; }
+
+  .card {
+    @apply rounded-2xl bg-white dark:bg-neutral-900 p-5
+           border transition-shadow shadow-sm hover:shadow-md;
+    border-color: rgb(200 169 81 / 0.35);
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 rounded-xl font-medium transition;
+    background: var(--black);
+    color: white;
+    border: 1px solid transparent;
+  }
+  .btn:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 rounded-xl font-medium transition
+           border border-neutral-300 dark:border-neutral-700;
+    background: transparent;
+    color: inherit;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    background: #f6f6f6;
+  }
+
+  .nav-link { @apply relative inline-block; }
+  .nav-link::after {
+    content: ""; position: absolute; left: 0; bottom: -6px;
+    width: 0; height: 2px; background: var(--gold); transition: width .2s;
+  }
+  .nav-link:hover::after { width: 100%; }
+}
