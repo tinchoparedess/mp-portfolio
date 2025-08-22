@@ -1,47 +1,71 @@
-/* Tailwind v4 */
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-/* Base elegante y mínima */
+/* ===== Tema base ===== */
 :root {
-  color-scheme: light dark;
+  --gold: #C8A951;      /* dorado suave */
+  --black: #111111;     /* negro profundo */
 }
-html, body {
-  background: #ffffff;
-  color: #0a0a0a;
-}
-@media (prefers-color-scheme: dark) {
+
+@layer base {
   html, body {
-    background: #0a0a0a; /* neutral-950 aprox */
-    color: #f5f5f5;
+    @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100;
+  }
+  ::selection {
+    background: #f5ecd2; /* guiño dorado */
+    color: var(--black);
   }
 }
 
-/* Utilidad de contenedor centrado */
-.container {
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 64rem; /* ~ max-w-5xl */
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
+/* ===== Utilidades elegantes ===== */
+@layer components {
+  /* contenedor limpio */
+  .container { @apply mx-auto max-w-4xl px-6; }
 
-/* Selección de texto */
-::selection {
-  background: #e5e7eb; /* neutral-200 */
-  color: #111827;      /* neutral-900 */
-}
-
-/* Card mínima (opcional) */
-.card {
-  border-radius: 1rem;
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(255,255,255,.8);
-  backdrop-filter: blur(6px);
-  padding: 1.25rem;
-}
-@media (prefers-color-scheme: dark) {
+  /* tarjetas */
   .card {
-    border-color: rgba(255,255,255,.12);
-    background: rgba(10,10,10,.6);
+    @apply rounded-2xl bg-white dark:bg-neutral-900 p-5
+           border transition-shadow shadow-sm hover:shadow-md;
+    border-color: rgb(200 169 81 / 0.35);   /* borde dorado suave */
   }
+
+  /* botones */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 rounded-xl font-medium transition;
+    background: var(--black);
+    color: white;
+    border: 1px solid transparent;
+  }
+  .btn:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+           px-4 py-2 rounded-xl font-medium transition
+           border border-neutral-300 dark:border-neutral-700;
+    background: transparent;
+    color: inherit;
+  }
+  .btn-outline:hover {
+    border-color: var(--gold);
+    background: #f6f6f6;
+  }
+
+  /* links del navbar con subrayado dorado al hover */
+  .nav-link {
+    @apply relative inline-block;
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -6px;
+    width: 0; height: 2px;
+    background: var(--gold);
+    transition: width .2s ease;
+  }
+  .nav-link:hover::after { width: 100%; }
 }

@@ -15,22 +15,21 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/70 dark:bg-neutral-950/60 backdrop-blur border-b border-neutral-200/60 dark:border-neutral-800">
-      <nav className="max-w-4xl mx-auto px-6 h-14 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/60 backdrop-blur
+                       border-b border-black/10">
+      <nav className="container h-14 flex items-center justify-between">
         <a href="#top" className="font-semibold">Martín Paredes</a>
 
         {/* desktop */}
-        <ul className="hidden sm:flex gap-5 text-sm">
+        <ul className="hidden sm:flex gap-6 text-sm">
           {links.map(l => (
-            <li key={l.href}>
-              <a className="hover:opacity-70" href={l.href}>{l.label}</a>
-            </li>
+            <li key={l.href}><a className="nav-link" href={l.href}>{l.label}</a></li>
           ))}
         </ul>
 
         {/* mobile */}
         <button
-          className="sm:hidden rounded-md border px-3 py-1"
+          className="sm:hidden btn-outline"
           onClick={() => setOpen(v => !v)}
           aria-label="Abrir menú"
         >
@@ -40,9 +39,9 @@ export default function Navbar() {
 
       {/* panel mobile */}
       {open && (
-        <ul className="sm:hidden max-w-4xl mx-auto px-6 pb-3 text-sm">
+        <ul className="sm:hidden container pb-3 text-sm">
           {links.map(l => (
-            <li key={l.href} className="py-1.5 border-t border-neutral-200/60 dark:border-neutral-800">
+            <li key={l.href} className="py-2 border-t border-black/10">
               <a href={l.href} onClick={() => setOpen(false)}>{l.label}</a>
             </li>
           ))}

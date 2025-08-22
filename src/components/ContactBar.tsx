@@ -1,7 +1,7 @@
 type Props = {
-  whatsapp?: string; // "39XXXXXXXXX"
+  whatsapp?: string; // "54911XXXXXXX"
   email?: string;    // "tu-email@ejemplo.com"
-  phone?: string;    // "+39XXXXXXXXX"
+  phone?: string;    // "+39 3XX XXX XXXX"
 };
 
 export default function ContactBar({ whatsapp, email, phone }: Props) {
@@ -9,12 +9,11 @@ export default function ContactBar({ whatsapp, email, phone }: Props) {
   const mailLink = email ? `mailto:${email}` : "#";
   const phoneLink = phone ? `tel:${phone}` : "#";
 
-  const btn = "px-4 py-2 rounded-xl border hover:bg-neutral-50 dark:hover:bg-neutral-900";
   return (
     <div className="flex flex-wrap gap-3">
-      <a className={btn} href={waLink} target="_blank" rel="noreferrer">WhatsApp</a>
-      <a className={btn} href={mailLink}>Email</a>
-      <a className={btn} href={phoneLink}>Llamar</a>
+      <a className="btn" href={waLink} target="_blank" rel="noreferrer">WhatsApp</a>
+      <a className="btn-outline" href={mailLink}>Email</a>
+      <a className="btn-outline" href={phoneLink}>Llamar</a>
     </div>
   );
 }
