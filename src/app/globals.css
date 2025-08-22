@@ -1,0 +1,47 @@
+/* Tailwind v4 */
+@import "tailwindcss";
+
+/* Base elegante y mínima */
+:root {
+  color-scheme: light dark;
+}
+html, body {
+  background: #ffffff;
+  color: #0a0a0a;
+}
+@media (prefers-color-scheme: dark) {
+  html, body {
+    background: #0a0a0a; /* neutral-950 aprox */
+    color: #f5f5f5;
+  }
+}
+
+/* Utilidad de contenedor centrado */
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 64rem; /* ~ max-w-5xl */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Selección de texto */
+::selection {
+  background: #e5e7eb; /* neutral-200 */
+  color: #111827;      /* neutral-900 */
+}
+
+/* Card mínima (opcional) */
+.card {
+  border-radius: 1rem;
+  border: 1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.8);
+  backdrop-filter: blur(6px);
+  padding: 1.25rem;
+}
+@media (prefers-color-scheme: dark) {
+  .card {
+    border-color: rgba(255,255,255,.12);
+    background: rgba(10,10,10,.6);
+  }
+}
