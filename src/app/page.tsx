@@ -3,6 +3,8 @@
 import { Playfair_Display } from "next/font/google";
 import Card from "@/components/Card";
 import ContactBar from "@/components/ContactBar";
+import TestimonialCard from "@/components/TestimonialCard";
+import Gallery from "@/components/Gallery";
 
 const playfair = Playfair_Display({ subsets: ["latin"], weight: ["600", "700"] });
 
@@ -12,8 +14,9 @@ export default function Page() {
 
       {/* HERO */}
       <section className="text-center space-y-6">
-      <h1 className="text-5xl font-bold text-red-500">TEST ROJO</h1>
-
+        <h1 className={`${playfair.className} text-4xl sm:text-5xl font-bold`}>
+          Tarjeta digital minimalista
+        </h1>
         <p className="text-neutral-700">
           (Placeholder) Tu frase de presentación irá acá.
         </p>
@@ -25,7 +28,7 @@ export default function Page() {
 
       {/* SOBRE MÍ */}
       <section id="sobre-mi" className="space-y-4">
-        <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Sobre mí</h2>
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Sobre mí</h2>
         <p className="text-neutral-700">
           (Placeholder) Breve intro. Después lo reemplazamos por tu bio real.
         </p>
@@ -33,7 +36,7 @@ export default function Page() {
 
       {/* LOGROS */}
       <section id="logros" className="space-y-6">
-        <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Logros destacados</h2>
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Logros destacados</h2>
         <div className="grid gap-6 sm:grid-cols-3">
           <Card title="Temporada Cortina" subtitle="Servicio y rotación" metric="+25% tips">
             Gestión de mesas y experiencia del cliente con foco en velocidad sin perder calidez.
@@ -49,7 +52,7 @@ export default function Page() {
 
       {/* PROYECTOS */}
       <section id="proyectos" className="space-y-6">
-        <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Proyectos</h2>
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Proyectos</h2>
         <div className="grid gap-6 sm:grid-cols-2">
           <Card title="Optimización de reservas" subtitle="Hospitality - Ops" metric="+18% rotación">
             Problema: cuellos de botella en hora pico.<br />
@@ -65,7 +68,7 @@ export default function Page() {
 
       {/* VIAJES */}
       <section id="viajes" className="space-y-6">
-        <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Viajes & experiencias</h2>
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Viajes & experiencias</h2>
         <div className="grid gap-6 sm:grid-cols-3">
           <Card title="Irán" subtitle="Historia & espiritualidad">
             (Placeholder) Qué aprendiste que aplicás a la hospitalidad y proyectos.
@@ -79,9 +82,33 @@ export default function Page() {
         </div>
       </section>
 
+      {/* TESTIMONIOS */}
+      <section id="testimonios" className="space-y-6">
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Testimonios</h2>
+        <div className="grid gap-6 sm:grid-cols-2">
+          <TestimonialCard
+            quote="Martín elevó la experiencia del cliente y los números al mismo tiempo."
+            author="Nombre Apellido"
+            role="Gerente, Restaurante X"
+          />
+          <TestimonialCard
+            quote="Eficiencia operativa con calidez humana: una combinación rara."
+            author="Nombre Apellido"
+            role="Director, Hotel Y"
+          />
+        </div>
+      </section>
+
+      {/* GALERÍA */}
+      <section id="galeria" className="space-y-6">
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Galería</h2>
+        <Gallery images={["/img1.jpg", "/img2.jpg", "/img3.jpg", "/img4.jpg"]} />
+        <p className="text-sm text-neutral-500">Cuando tengas tus fotos, las ponemos en <code>/public</code> y se ven acá.</p>
+      </section>
+
       {/* IDEAS */}
       <section id="ideas" className="space-y-6">
-        <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Ideas / Notas</h2>
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Ideas / Notas</h2>
         <div className="grid gap-6">
           <Card title="Experiencias con alma" subtitle="Ensayo corto">
             (Placeholder) Mini-ensayo. Después lo pasamos a MDX si querés escribir más.
@@ -91,7 +118,7 @@ export default function Page() {
 
       {/* CONTACTO */}
       <section id="contacto" className="space-y-6">
-        <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Contacto</h2>
+        <h2 className={`${playfair.className} text-2xl font-bold`}>Contacto</h2>
         <p className="text-neutral-700">Elegí el canal que prefieras. Respondo rápido.</p>
         <ContactBar whatsapp="5491122334455" email="martin@mail.com" phone="+39 333 444 5555" />
       </section>

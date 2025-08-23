@@ -15,19 +15,16 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-950/60 backdrop-blur
-                       border-b border-black/10">
+    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b border-black/10">
       <nav className="container h-14 flex items-center justify-between">
         <a href="#top" className="font-semibold">Martín Paredes</a>
 
-        {/* desktop */}
         <ul className="hidden sm:flex gap-6 text-sm">
           {links.map(l => (
             <li key={l.href}><a className="nav-link" href={l.href}>{l.label}</a></li>
           ))}
         </ul>
 
-        {/* mobile */}
         <button
           className="sm:hidden btn-outline"
           onClick={() => setOpen(v => !v)}
@@ -37,7 +34,6 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* panel mobile */}
       {open && (
         <ul className="sm:hidden container pb-3 text-sm">
           {links.map(l => (
