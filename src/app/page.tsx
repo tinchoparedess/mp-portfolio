@@ -1,124 +1,129 @@
-"use client";
-
-import { Playfair_Display } from "next/font/google";
-import Card from "@/components/Card";
+import SectionTitle from "@/components/SectionTitle";
 import ContactBar from "@/components/ContactBar";
-import Navbar from "@/components/Navbar";
-import Gallery from "@/components/Gallery";
+import { Playfair_Display } from "next/font/google";
 
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["600", "700"] });
+const playfair = Playfair_Display({ subsets: ["latin"], weight: ["700"] });
 
 export default function Page() {
   return (
-    <>
-      <a id="top" />
-      <Navbar />
+    <div id="top" className="min-h-screen transition-colors">
+      {/* Vignette sutil solo en oscuro */}
+      <div
+        aria-hidden
+        className="fixed inset-0 -z-10 hidden dark:block"
+        style={{
+          background:
+            "radial-gradient(900px 500px at 18% -10%, rgba(200,169,81,.16), transparent 60%), radial-gradient(900px 500px at 82% -18%, rgba(255,255,255,.06), transparent 60%)",
+        }}
+      />
 
-      <div className="mx-auto max-w-4xl px-6 py-12 space-y-20">
+      <main className="site-wrap">
         {/* HERO */}
         <section className="text-center space-y-6">
-          <h1 className={`${playfair.className} text-4xl sm:text-5xl font-bold text-neutral-900`}>
-            Tarjeta digital minimalista
+          <h1 className={`${playfair.className} text-4xl sm:text-5xl font-bold tracking-tight`}>
+            Martín Paredes
           </h1>
-          <p className="text-neutral-700">
-            (Placeholder) Tu frase de presentación irá acá.
-          </p>
-          <div className="flex justify-center gap-4">
-            <a href="#proyectos" className="px-4 py-2 rounded-xl bg-black text-white hover:bg-[#C8A951] hover:text-black transition">
-              Ver proyectos
-            </a>
-            <a href="#contacto" className="px-4 py-2 rounded-xl border border-neutral-300 hover:border-[#C8A951] hover:bg-neutral-100 transition">
-              Contactar
-            </a>
+          <p className="muted">“Piensa en grande, cree en grande.”</p>
+          <div className="flex justify-center gap-3">
+            <a href="#contacto" className="btn btn-primary">Conectemos</a>
+            <a href="#quien-soy" className="btn btn-ghost">Conocer más</a>
           </div>
         </section>
 
-        {/* SOBRE MÍ */}
-        <section id="sobre-mi" className="space-y-4">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Sobre mí</h2>
-          <p className="text-neutral-700">
-            (Placeholder) Breve intro. Después lo reemplazamos por tu bio real.
+        {/* QUIÉN SOY */}
+        <section id="quien-soy" className="space-y-3">
+          <div className="section-title">
+            <h2>Quién soy</h2>
+            <span className="divider" />
+          </div>
+          <p className="text-[15px] leading-7 muted">
+            (placeholder) 3–5 líneas humanas, sin CV. Viajes, idiomas, curiosidad.
           </p>
         </section>
 
-        {/* LOGROS */}
-        <section id="logros" className="space-y-6">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Logros destacados</h2>
-          <div className="grid gap-6 sm:grid-cols-3">
-            <Card title="Temporada Cortina" subtitle="Servicio y rotación" metric="+25% tips">
-              Gestión de mesas y experiencia del cliente con foco en velocidad sin perder calidez.
-            </Card>
-            <Card title="Ocupación media" subtitle="Proyecto Operativo" metric="82%">
-              Ajuste de turnos y flujo de reservas para picos de demanda.
-            </Card>
-            <Card title="NPS" subtitle="Satisfacción" metric="+1.2">
-              Scripts de atención y cierres claros aumentaron la recomendación.
-            </Card>
+        {/* HIGHLIGHTS */}
+        <section id="highlights" className="space-y-3">
+          <div className="section-title">
+            <h2>Highlights</h2>
+            <span className="divider" />
+          </div>
+          <p className="section-note">Fortalezas en pocas palabras</p>
+          <ul className="mt-2 grid gap-3 sm:grid-cols-3">
+            {["Adaptabilidad", "Comunicación / Idiomas", "Hospitalidad con alma"].map((t) => (
+              <li key={t} className="chip">{t}</li>
+            ))}
+          </ul>
+        </section>
+
+        {/* ESCENAS */}
+        <section id="escenas" className="space-y-3">
+          <div className="section-title">
+            <h2>Escenas</h2>
+            <span className="divider" />
+          </div>
+          <p className="section-note">Momentos que me formaron</p>
+
+          <div className="mt-2 grid gap-6 sm:grid-cols-3 text-sm">
+            {[
+              { t: "Cortina d’Ampezzo", d: "(placeholder) Precisión y ritmo." },
+              { t: "Irán", d: "(placeholder) Hospitalidad ancestral." },
+              { t: "Cerdeña", d: "(placeholder) Calidez que vende." },
+            ].map((x) => (
+              <article key={x.t} className="card">
+                <strong>{x.t}</strong>
+                <p className="mt-1 muted">{x.d}</p>
+              </article>
+            ))}
           </div>
         </section>
 
-        {/* PROYECTOS */}
-        <section id="proyectos" className="space-y-6">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Proyectos</h2>
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Card title="Optimización de reservas" subtitle="Hospitality - Ops" metric="+18% rotación">
-              Problema: cuellos de botella en hora pico.<br />
-              Solución: layout, timing y pre-orden.<br />
-              Resultado: más mesas atendidas con la misma gente.
-            </Card>
-            <Card title="Playbook de atención" subtitle="Servicio - Training" metric="-15% espera">
-              Guiones cortos, órdenes claras, cierre de mesa con propuesta.<br />
-              Mejora de tiempos y satisfacción.
-            </Card>
+        {/* VISIÓN */}
+        <section id="vision" className="space-y-3">
+          <div className="section-title">
+            <h2>Visión</h2>
+            <span className="divider" />
           </div>
-        </section>
-
-        {/* VIAJES */}
-        <section id="viajes" className="space-y-6">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Viajes & experiencias</h2>
-          <div className="grid gap-6 sm:grid-cols-3">
-            <Card title="Irán" subtitle="Historia & espiritualidad">
-              (Placeholder) Qué aprendiste que aplicás a la hospitalidad y proyectos.
-            </Card>
-            <Card title="Turquía" subtitle="Cultura & logística">
-              (Placeholder) Aprendizajes prácticos.
-            </Card>
-            <Card title="Italia" subtitle="Temporadas exigentes">
-              (Placeholder) Qué te dejó en operación y trato al cliente.
-            </Card>
-          </div>
-        </section>
-
-        {/* GALERÍA (miniaturas sobrias) */}
-        <section id="galeria" className="space-y-6">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Galería</h2>
-          <Gallery images={["/img1.jpg", "/img2.jpg", "/img3.jpg", "/img4.jpg"]} />
+          <p className="text-[15px] leading-7 muted">
+            (placeholder) Hospitalidad minimalista, sofisticada y con alma. Breve y ambicioso.
+          </p>
         </section>
 
         {/* IDEAS */}
-        <section id="ideas" className="space-y-6">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Ideas / Notas</h2>
-          <div className="grid gap-6">
-            <Card title="Experiencias con alma" subtitle="Ensayo corto">
-              (Placeholder) Mini-ensayo. Después lo pasamos a MDX si querés escribir más.
-            </Card>
+        <section id="ideas" className="space-y-3">
+          <div className="section-title">
+            <h2>Ideas</h2>
+            <span className="divider" />
           </div>
+          <p className="section-note">Aforismos breves</p>
+          <ul className="mt-2 grid gap-3">
+            {[
+              "“Viajar no es escapar, es entrenar el alma.”",
+              "“La eficiencia permite la calidez.”",
+            ].map((i) => (
+              <li key={i} className="card text-sm">{i}</li>
+            ))}
+          </ul>
         </section>
 
         {/* CONTACTO */}
-        <section id="contacto" className="space-y-6">
-          <h2 className={`${playfair.className} text-2xl font-bold text-neutral-900`}>Contacto</h2>
-          <p className="text-neutral-700">Elegí el canal que prefieras. Respondo rápido.</p>
-          <ContactBar whatsapp="5491122334455" email="martin@mail.com" phone="+39 333 444 5555" />
+        <section id="contacto" className="space-y-3">
+          <div className="section-title">
+            <h2>Contacto</h2>
+            <span className="divider" />
+          </div>
+          <p className="muted">Si esto te resonó, escribime.</p>
+          <div className="mt-3">
+            <ContactBar whatsapp="54911XXXXXXXX" email="tuemail@ejemplo.com" phone="+39 3XX XXX XXXX" />
+          </div>
         </section>
 
         {/* FOOTER */}
-        <footer className="pt-10 text-center text-sm text-neutral-500">
-          <div className="border-t border-black/10 pt-6">
-            © {new Date().getFullYear()} <span className="text-[#C8A951]">Martín Paredes</span> — Elegancia minimalista.
+        <footer className="pt-10 text-center text-sm muted">
+          <div className="border-t border-black/10 dark:border-white/10 pt-6">
+            © {new Date().getFullYear()} <span className="gold">Martín Paredes</span> — Elegancia minimalista.
           </div>
         </footer>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }
