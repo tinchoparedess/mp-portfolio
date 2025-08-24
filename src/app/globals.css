@@ -1,83 +1,475 @@
 @import "tailwindcss";
 
-/* ===== Tokens & base ===== */
-@layer base {
-  :root{
-    --gold: #C8A951;
-    --bg-light: #FAF9F6;   /* marfil */
-    --fg-light: #1A1A1A;
-    --muted-light: #6B7280;
-
-    --bg-dark: #0B0B0C;    /* carbón */
-    --panel-dark: #121213; /* tarjetas oscuras */
-    --fg-dark: #F3F3F3;
-    --muted-dark: #9CA3AF;
-  }
-
-  html,body{height:100%;}
-  body{
-    background-color: var(--bg-light);
-    color: var(--fg-light);
-  }
-  html.dark body{
-    background-color: var(--bg-dark);
-    color: var(--fg-dark);
-  }
-
-  ::selection{ background: var(--gold); color:#0a0a0a; }
-  a{ color: inherit; text-decoration:none; }
+/* --- Light por defecto; Dark cuando <html> tiene .dark --- */
+:root {
+  --bg-light: #F5F3EE;   /* fondo claro marfil */
+  --ink-light: #121315;  /* texto oscuro */
+  --bg-dark: #0B0B0C;    /* fondo oscuro piano */
+  --ink-dark: #F5F3EE;   /* texto claro */
 }
 
-/* ===== Utilidades de diseño (reusables) ===== */
-@layer utilities {
-  /* contenedor angosto y ritmo vertical */
-  .site-wrap{ @apply mx-auto max-w-3xl px-6 py-16 space-y-16; }
+/* === TOKENS BÁSICOS (light/dark) ======================= */
+:root{
+  /* Paleta base */
+  --bg-light: #F6F5F2;
+  --ink-light: #0F1012;
+  --card-light:#FFFFFF;
 
-  /* títulos de sección + divisor dorado */
-  .section-title{ @apply text-xl font-semibold tracking-tight flex items-end justify-between; }
-  .section-note{ @apply text-[13px] leading-5 text-neutral-500 dark:text-[var(--muted-dark)]; }
-  .divider{ height:2px; width:56px; border-radius:9999px; background:rgba(0,0,0,.10); }
-  .dark .divider{ background: color-mix(in srgb, var(--gold) 70%, transparent); }
+  /* Dorados */
+  --gold-1:#C9A227;   /* principal */
+  --gold-2:#E6C35B;   /* luz */
+  --gold-3:#9B7C1F;   /* sombra */
 
-  /* tarjetas elegantes (sin sombras fuertes) */
-  .card{
-    @apply rounded-2xl p-4 border;
-    background: rgba(255,255,255,.85);
-    border-color: #E6E6E6;
-  }
-  .dark .card{
-    background: color-mix(in srgb, var(--panel-dark) 90%, transparent);
-    border-color: color-mix(in srgb, var(--gold) 40%, transparent);
-  }
+  /* Sombras */
+  --shadow-light: 0 18px 42px -24px rgba(0,0,0,.25);
+}
+html.dark{
+  --bg-dark:#0B0C0E;
+  --ink-dark:#EDEDED;
+  --card-dark:#151618;
 
-  /* chips */
-  .chip{
-    @apply rounded-2xl px-4 py-3 text-sm border;
-    background: rgba(255,255,255,.85);
-    border-color: #E6E6E6;
-  }
-  .dark .chip{
-    background: color-mix(in srgb, var(--panel-dark) 90%, transparent);
-    border-color: color-mix(in srgb, var(--gold) 45%, transparent);
-  }
+  --shadow-dark: 0 28px 60px -28px rgba(0,0,0,.85);
+}
 
-  /* botones */
-  .btn{ @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-medium transition border; }
-  .btn-primary{
-    @apply text-white bg-black border-transparent hover:bg-neutral-800;
-  }
-  .dark .btn-primary{
-    color:#000; background: var(--gold); border-color: var(--gold);
-  }
-  .btn-ghost{
-    @apply border border-neutral-300 hover:bg-neutral-100;
-  }
-  .dark .btn-ghost{
-    border-color: color-mix(in srgb, var(--gold) 70%, transparent);
-  }
+/* === ACCENTOS DORADOS REUSABLES ======================= */
+/* Texto con degradé oro (para detalles sutiles) */
+.gold-text{
+  background: linear-gradient(92deg, var(--gold-2), var(--gold-1), var(--gold-2));
+  -webkit-background-clip:text; background-clip:text; color: transparent;
+}
 
-  /* textos */
-  .muted{ color: var(--muted-light); }
-  .dark .muted{ color: var(--muted-dark); }
-  .gold{ color: var(--gold); }
+/* Borde dorado suave (cards/pills) */
+.gold-border{ border-color: color-mix(in oklab, var(--gold-1) 45%, transparent) !important; }
+.gold-border:hover{ border-color: color-mix(in oklab, var(--gold-2) 60%, transparent) !important; }
+
+/* Anillo de foco dorado accesible */
+.gold-ring:focus-visible{ outline: none; box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold-2) 55%, transparent); }
+
+/* Botón primario “oro” (light + dark) */
+.btn-primary--gold{
+  background: linear-gradient(135deg, var(--gold-2), var(--gold-1));
+  color:#111; border:1px solid color-mix(in oklab, var(--gold-3) 45%, transparent);
+  box-shadow:
+    0 8px 22px -10px rgba(0,0,0,.35),
+    0 0 0 1px color-mix(in oklab, var(--gold-1) 28%, transparent);
+}
+.btn-primary--gold:hover{
+  transform: translateY(-1px);
+  box-shadow:
+    0 12px 30px -12px rgba(0,0,0,.45),
+    0 0 0 1px color-mix(in oklab, var(--gold-2) 55%, transparent);
+}
+.btn-primary--gold:active{ transform: translateY(1px) scale(.995); }
+
+/* Sutil brillo dorado en modo oscuro para separadores */
+html.dark .accent-line, html.dark .hr-line{
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-1), var(--gold-2));
+  filter: drop-shadow(0 4px 12px rgba(201,162,39,.22));
+}
+
+body {
+  background: var(--bg-light);
+  color: var(--ink-light);
+}
+
+html.dark body {
+  background: var(--bg-dark);
+  color: var(--ink-dark);
+}
+/* ==== LUX SKIN (no tocar tu JSX) ======================================= */
+:root{
+  /* Claro */
+  --bg-light: #F5F3EE;          /* marfil suave */
+  --ink-light: #171819;         /* texto */
+  --muted-light: #6b7280;       /* descripciones */
+  --card-light: #FFFFFFF2;      /* tarjetas/pills */
+  --shadow-light: 0 10px 25px -10px rgba(17,24,39,.15);
+
+  /* Oscuro */
+  --bg-dark: #0B0B0C;           /* casi negro */
+  --ink-dark: #F3F4F6;
+  --muted-dark: #9CA3AF;
+  --card-dark: #121315EE;
+  --shadow-dark: 0 14px 36px -12px rgba(0,0,0,.6);
+
+  /* Oro */
+  --gold-1:#C9A227;             /* base */
+  --gold-2:#E5C455;             /* claro */
+  --gold-3:#8C6C1D;             /* profundo */
+}
+
+/* Base: fondos y texto según tema */
+body{ background:var(--bg-light); color:var(--ink-light); }
+html.dark body{ background:var(--bg-dark); color:var(--ink-dark); }
+
+/* Sutil degradé top para darle profundidad sin molestar */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none;
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(0,0,0,.06), transparent 55%);
+  z-index:-1;
+}
+html.dark body::before{
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), transparent 55%),
+    radial-gradient(700px 200px at 50% 0%, rgba(201,162,39,.08), transparent 50%);
+}
+
+/* Tipografías/descripciones más legibles */
+:is(p, .text-muted, .subtle, small){ color:var(--muted-light); }
+html.dark :is(p, .text-muted, .subtle, small){ color:var(--muted-dark); }
+
+/* Botones – sin cambiar tus clases: detectamos botones comunes */
+button, .btn{
+  transition: all .25s ease; border-radius:14px;
+  box-shadow: var(--shadow-light);
+}
+html.dark button, html.dark .btn{ box-shadow: var(--shadow-dark); }
+
+/* Primary (negro/dorado) si el botón ya es oscuro */
+:is(button,.btn).bg-black,
+:is(button,.btn).dark\:bg-white\/10{
+  border:1px solid transparent;
+}
+html.dark :is(button,.btn).bg-black{
+  border-color: color-mix(in oklab, var(--gold-2) 45%, transparent);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.05) inset,
+    0 8px 28px -10px rgba(0,0,0,.8),
+    0 0 0 1px color-mix(in oklab, var(--gold-1) 25%, transparent);
+}
+html.dark :is(button,.btn).bg-black:hover{
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.06) inset,
+    0 14px 40px -12px rgba(0,0,0,.9),
+    0 0 0 1px color-mix(in oklab, var(--gold-2) 45%, transparent);
+}
+
+/* Botón “fantasma” (borde) → borde dorado en oscuro */
+:is(button,.btn).border{
+  background: transparent;
+}
+html.dark :is(button,.btn).border{
+  border-color: color-mix(in oklab, var(--gold-1) 40%, transparent) !important;
+}
+html.dark :is(button,.btn).border:hover{
+  border-color: color-mix(in oklab, var(--gold-2) 60%, transparent) !important;
+}
+
+/* Tarjetas y pills (los bloques redondeados) */
+:is(.rounded-xl, .rounded-2xl).bg-white{
+  background: var(--card-light) !important; border:1px solid rgba(17,24,39,.06);
+  box-shadow: var(--shadow-light);
+}
+html.dark :is(.rounded-xl, .rounded-2xl).bg-white,
+html.dark :is(.rounded-xl, .rounded-2xl).bg-neutral-900{
+  background: var(--card-dark) !important; border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.04) inset,
+    var(--shadow-dark);
+}
+
+/* Líneas de sección finas → oro en oscuro, neutro en claro */
+.hr-line, .accent-line{
+  height:2px; width:110px; border-radius:999px;
+  background: linear-gradient(90deg, rgba(0,0,0,.15), rgba(0,0,0,.05), transparent);
+}
+html.dark .hr-line, html.dark .accent-line{
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-1), var(--gold-2));
+  filter: drop-shadow(0 4px 12px rgba(201,162,39,.22));
+}
+
+/* Enlaces: sobrios en claro, acento suave en oscuro */
+a{ text-underline-offset: 3px; text-decoration-thickness: 1px; }
+html.dark a:hover{
+  text-decoration-color: color-mix(in oklab, var(--gold-2) 65%, transparent);
+}
+
+/* Nav – barra semitransparente con blur según tema */
+.nav-glass{
+  backdrop-filter: blur(10px);
+  background: color-mix(in oklab, var(--bg-light) 72%, transparent);
+  border: 1px solid rgba(17,24,39,.08);
+}
+html.dark .nav-glass{
+  background: color-mix(in oklab, #0F1012 72%, transparent);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+/* Hero título con leve brillo en oscuro */
+html.dark .hero-title{
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.04),
+    0 18px 40px rgba(0,0,0,.75);
+}
+
+/* Citas (Ideas) – barrita luminosa en extremo derecho sólo en oscuro */
+.quote-bar{
+  position: relative;
+}
+html.dark .quote-bar::after{
+  content:""; position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  width:42px; height:4px; border-radius:999px;
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-2));
+  filter: drop-shadow(0 2px 8px rgba(201,162,39,.4));
+}
+
+/* Modo claro: títulos/subtítulos más visibles */
+h2, h3{ color: var(--ink-light); }
+section > p:first-of-type{ color: var(--muted-light); }
+/* ==== LUX SKIN v2 ======================================= */
+:root{
+  /* Claro */
+  --bg-light: #F5F3EE;
+  --ink-light: #151617;
+  --muted-light: #4B5563;
+  --card-light: #FFFFFFF2;
+  --shadow-light: 0 10px 25px -10px rgba(17,24,39,.15);
+
+  /* Oscuro */
+  --bg-dark: #0B0B0C;
+  --ink-dark: #F2F3F5;
+  --muted-dark: #C8CDD4;  /* MÁS CLARO para subtítulos visibles */
+  --card-dark: #121315EE;
+  --shadow-dark: 0 14px 36px -12px rgba(0,0,0,.6);
+
+  /* Oro */
+  --gold-1:#C9A227;
+  --gold-2:#E5C455;
+  --gold-3:#8C6C1D;
+}
+
+/* Fondo y texto base */
+body{ background:var(--bg-light); color:var(--ink-light); }
+html.dark body{ background:var(--bg-dark); color:var(--ink-dark); }
+
+/* Profundidad suave */
+body::before{
+  content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(0,0,0,.06), transparent 55%);
+}
+html.dark body::before{
+  background:
+    radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,.06), transparent 55%),
+    radial-gradient(700px 200px at 50% 0%, rgba(201,162,39,.08), transparent 50%);
+}
+
+/* Subtítulos/auxiliares MÁS visibles en oscuro */
+:is(p, .text-muted, .subtle, small){ color:var(--muted-light); }
+html.dark :is(p, .text-muted, .subtle, small){ color:var(--muted-dark); }
+
+/* Subtítulo inmediatamente después de h2 */
+h2 + p{ opacity:.9; }
+html.dark h2 + p{ color:var(--muted-dark); opacity:1; }
+
+/* BOTONES */
+button, .btn{
+  transition: all .25s ease; border-radius:14px;
+  box-shadow: var(--shadow-light);
+}
+html.dark :is(button,.btn){ box-shadow: var(--shadow-dark); }
+
+/* Botón sólido oscuro → borde dorado en oscuro */
+:is(button,.btn).bg-black{
+  border:1px solid transparent;
+}
+html.dark :is(button,.btn).bg-black{
+  border-color: color-mix(in oklab, var(--gold-2) 45%, transparent);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.05) inset,
+    0 8px 28px -10px rgba(0,0,0,.8),
+    0 0 0 1px color-mix(in oklab, var(--gold-1) 25%, transparent);
+}
+html.dark :is(button,.btn).bg-black:hover{
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.06) inset,
+    0 14px 40px -12px rgba(0,0,0,.9),
+    0 0 0 1px color-mix(in oklab, var(--gold-2) 45%, transparent);
+}
+
+/* Botón borde (fantasma) → dorado en oscuro */
+:is(button,.btn).border{ background: transparent; }
+html.dark :is(button,.btn).border{
+  border-color: color-mix(in oklab, var(--gold-1) 40%, transparent) !important;
+}
+html.dark :is(button,.btn).border:hover{
+  border-color: color-mix(in oklab, var(--gold-2) 60%, transparent) !important;
+}
+
+/* TARJETAS / PILLS
+   Forzamos estética correcta SIEMPRE, sin depender de la clase bg-*
+   (esto arregla que en CLARO aparezcan negras). */
+:is(.rounded-xl, .rounded-2xl){
+  background: var(--card-light) !important;
+  color: var(--ink-light) !important;
+  border:1px solid rgba(17,24,39,.08);
+  box-shadow: var(--shadow-light);
+}
+html.dark :is(.rounded-xl, .rounded-2xl){
+  background: var(--card-dark) !important;
+  color: var(--ink-dark) !important;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.04) inset,
+    var(--shadow-dark);
+}
+
+/* LÍNEAS DORADAS (si usás cualquier div como rayita, poné className="accent-line") */
+.accent-line, .hr-line{
+  height:2px; width:110px; border-radius:999px;
+  background: linear-gradient(90deg, rgba(0,0,0,.15), rgba(0,0,0,.05), transparent);
+}
+html.dark .accent-line, html.dark .hr-line{
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-1), var(--gold-2));
+  filter: drop-shadow(0 4px 12px rgba(201,162,39,.22));
+}
+
+/* NAV vidrio */
+.nav-glass{
+  backdrop-filter: blur(10px);
+  background: color-mix(in oklab, var(--bg-light) 72%, transparent);
+  border: 1px solid rgba(17,24,39,.08);
+}
+html.dark .nav-glass{
+  background: color-mix(in oklab, #0F1012 72%, transparent);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+/* H1 con leve brillo en oscuro */
+html.dark .hero-title{
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.04),
+    0 18px 40px rgba(0,0,0,.75);
+}
+
+/* Citas (Ideas) barrita dorada */
+.quote-bar{ position: relative; }
+html.dark .quote-bar::after{
+  content:""; position:absolute; right:14px; top:50%; transform:translateY(-50%);
+  width:42px; height:4px; border-radius:999px;
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-2));
+  filter: drop-shadow(0 2px 8px rgba(201,162,39,.4));
+}
+
+/* Títulos/secciones en CLARO más contrastados */
+h2, h3{ color: var(--ink-light); }
+section > p:first-of-type{ color: var(--muted-light); }
+/* ===== LUX INTERACTIONS & LAYOUT v1 ===================== */
+/* Contenedor maestro (ancho controlado + padding lateral) */
+.container-pro{
+  max-width: 1120px; margin-inline:auto; padding-inline: 1.25rem;
+}
+@media (min-width: 1024px){ .container-pro{ padding-inline: 2rem; }}
+
+/* Sección vertical rhythm */
+.section{ padding-block: 3.5rem; }
+@media (min-width: 1024px){ .section{ padding-block: 5rem; }}
+
+/* Tipos rápidos */
+.lead{ font-size: 1.05rem; line-height: 1.65; }
+.centered{ text-align: center; }
+
+/* === Botones refinados === */
+.btn{
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.7rem 1.05rem; border-radius:14px; font-weight:600;
+  transition: transform .15s ease, box-shadow .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
+  border:1px solid transparent; cursor:pointer; user-select:none;
+}
+.btn:active{ transform: translateY(1px) scale(0.995); }
+
+/* Primario (negro en claro / negro con ribete oro en oscuro) */
+.btn-primary{
+  background:#111214; color:#fff; box-shadow: 0 10px 22px -12px rgba(0,0,0,.35);
+}
+.btn-primary:hover{ transform: translateY(-1px); }
+html.dark .btn-primary{
+  border-color: color-mix(in oklab, var(--gold-2) 45%, transparent);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.06) inset,
+    0 16px 36px -14px rgba(0,0,0,.85),
+    0 0 0 1px color-mix(in oklab, var(--gold-1) 28%, transparent);
+}
+html.dark .btn-primary:hover{
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.07) inset,
+    0 22px 46px -16px rgba(0,0,0,.9),
+    0 0 0 1px color-mix(in oklab, var(--gold-2) 50%, transparent);
+}
+
+/* Secundario (contorno) */
+.btn-ghost{
+  background: transparent;
+  color: var(--ink-light);
+  border-color: rgba(17,24,39,.14);
+}
+.btn-ghost:hover{ background: rgba(17,24,39,.04); }
+html.dark .btn-ghost{
+  color: var(--ink-dark);
+  border-color: color-mix(in oklab, var(--gold-1) 38%, transparent);
+}
+html.dark .btn-ghost:hover{
+  background: rgba(255,255,255,.03);
+  border-color: color-mix(in oklab, var(--gold-2) 52%, transparent);
+}
+
+/* Focus ring oro accesible */
+.btn:focus-visible, a:focus-visible, input:focus-visible{
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--gold-2) 50%, transparent);
+}
+
+/* === Tarjetas / pills (hover sutil, sin cambiar tu JSX) === */
+.pill, .card{
+  border-radius: 14px;
+  background: var(--card-light); color: var(--ink-light);
+  border:1px solid rgba(17,24,39,.08);
+  box-shadow: var(--shadow-light);
+  transition: transform .18s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.pill:hover, .card:hover{ transform: translateY(-2px); }
+html.dark .pill, html.dark .card{
+  background: var(--card-dark); color: var(--ink-dark);
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.04) inset,
+    var(--shadow-dark);
+}
+
+/* === Separadores / detalles dorados === */
+.accent-line, .hr-line{
+  height:2px; width:120px; border-radius:999px; margin-block: .75rem;
+  background: linear-gradient(90deg, rgba(0,0,0,.15), rgba(0,0,0,.05), transparent);
+}
+html.dark .accent-line, html.dark .hr-line{
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-1), var(--gold-2));
+  filter: drop-shadow(0 4px 12px rgba(201,162,39,.22));
+}
+
+/* === Navbar “glass” con dorado sutil en oscuro === */
+.nav-glass{
+  backdrop-filter: blur(10px);
+  background: color-mix(in oklab, var(--bg-light) 72%, transparent);
+  border-bottom: 1px solid rgba(17,24,39,.08);
+}
+html.dark .nav-glass{
+  background: color-mix(in oklab, #0F1012 72%, transparent);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  box-shadow: 0 1px 0 0 color-mix(in oklab, var(--gold-1) 26%, transparent) inset;
+}
+
+/* === Hero: centrado + halo dorado sutil en oscuro === */
+.hero-center{ text-align:center; }
+.hero-wrap{ padding-block: 3.5rem; }
+.hero-grad{
+  border-radius: 22px;
+  background: rgba(17,17,18,.04);
+  box-shadow: 0 12px 36px -18px rgba(0,0,0,.25) inset;
+}
+html.dark .hero-grad{
+  background:
+    radial-gradient(1200px 420px at 50% -5%, rgba(201,162,39,.08), transparent 55%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.08));
+  box-shadow:
+    0 1px 0 0 rgba(255,255,255,.04) inset,
+    0 22px 54px -24px rgba(0,0,0,.8);
 }
