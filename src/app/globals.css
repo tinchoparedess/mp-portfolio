@@ -467,3 +467,21 @@ html.dark .nav-drawer{
 }
 html.dark .drawer-link{ border-bottom-color: rgba(255,255,255,.10); }
 .drawer-link:last-child{ border-bottom: none; }
+/* --- FIX: toggle no debe tapar el drawer en mobile --- */
+.nav-glass { position: sticky; top: 0; z-index: 40; }
+.nav-drawer { z-index: 60; }           /* por encima del header */
+.nav-actions { z-index: 45; }
+
+/* En mobile, al abrir el drawer se oculta suavemente el toggle
+   (sigue al lado del hamburguer cuando está cerrado). */
+@media (max-width: 768px){
+  .nav-glass.drawer-open .t-mobile-toggle{
+    opacity: 0;
+    transform: translateX(6px) scale(.96);
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+  }
+  .t-mobile-toggle{
+    transition: opacity .2s ease, transform .2s ease;
+  }
+}
