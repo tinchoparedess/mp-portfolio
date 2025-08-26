@@ -279,7 +279,7 @@ html.dark .hamburger span{ background:#e5e7eb; }
   transform: translateY(-8px);
   opacity: 0; pointer-events: none;
   transition: opacity .18s ease, transform .18s ease;
-  z-index: 60; /* por encima del toggle flotante */
+  z-index: 60; /* por encima de cualquier cosa del header */
 }
 html.dark .nav-drawer{
   background: color-mix(in oklab, var(--bg-d) 88%, #000 0%);
@@ -293,13 +293,3 @@ html.dark .nav-drawer{
 }
 html.dark .drawer-link{ border-bottom-color: rgba(255,255,255,.10); }
 .drawer-link:last-child{ border-bottom: none; }
-
-/* ================== TOGGLE FLOTANTE (solo mobile) ================== */
-.theme-float{
-  position: fixed;
-  z-index: 55;                 /* debajo del drawer (60) y sobre contenido */
-  padding: 4px;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
-  backdrop-filter: blur(6px);
-}
