@@ -12,17 +12,23 @@
   /* Oscuro */
   --bg-d: #0B0B0C;
   --ink-d: #F2F3F5;
-  --muted-d: #E2E5E9;   /* más claro para subtítulos visibles */
+  --muted-d: #E2E5E9;     /* claro para subtítulos */
   --panel-d: #121315EE;
   --shadow-d: 0 18px 42px -20px rgba(0,0,0,.75);
 
   /* Oro */
   --gold-1:#C9A227;
   --gold-2:#E5C455;
+
+  /* Transición global suave */
+  --ui-transition: color .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
 }
 
 /* ================== BASE ================== */
 html, body { height: 100%; }
+*{ transition: var(--ui-transition); }
+@media (prefers-reduced-motion: reduce){ *{ transition: none !important; animation: none !important; } }
+
 body{ background: var(--bg); color: var(--ink); }
 html.dark body{ background: var(--bg-d); color: var(--ink-d); }
 
@@ -55,15 +61,20 @@ html.dark body::before{
   letter-spacing: -0.01em;
 }
 
-/* Subtítulos visibles SIEMPRE */
+/* Subtítulos visibles + detalle dorado */
 .kicker{
   margin-top: .35rem;
   font-size: 0.95rem;
   color: var(--muted);
+  display:inline-block;
 }
-html.dark .kicker{ 
-  color: var(--muted-d) !important; 
+.kicker::after{
+  content:""; display:block; margin:.55rem auto 0;
+  width:90px; height:3px; border-radius:999px;
+  background: linear-gradient(90deg, var(--gold-2), var(--gold-1));
+  opacity:.95;
 }
+html.dark .kicker{ color: var(--muted-d) !important; }
 
 /* texto de párrafo cómodo */
 .lead{ font-size: 1.05rem; line-height: 1.65; }
@@ -84,7 +95,6 @@ html.dark .panel{
   border: 1px solid rgba(255,255,255,.08);
 }
 
-/* tarjetas genéricas */
 .pill, .card{
   border-radius: 14px;
   background: var(--panel);
@@ -103,7 +113,6 @@ html.dark .pill, html.dark .card{
 .card-sub{ font-size: .94rem; color: var(--muted); }
 html.dark .card-sub{ color: var(--muted-d) !important; }
 
-/* citas */
 .quote{ margin: 0 .25rem; color: var(--gold-1); }
 
 /* ================== BOTONES ================== */
@@ -113,8 +122,11 @@ html.dark .card-sub{ color: var(--muted-d) !important; }
   border:1px solid rgba(17,24,39,.14);
   transition: transform .15s ease, box-shadow .25s ease, background .25s ease, color .25s ease, border-color .25s ease;
   box-shadow: 0 10px 22px -12px rgba(17,24,39,.25);
+  font-size: 0.9rem;
 }
 .btn:active{ transform: translateY(1px) scale(.995); }
+.btn svg{ margin-right:6px; flex-shrink:0; width:1em; height:1em; }
+.btn span{ line-height:1; }
 
 .btn-primary{ background:#111214; color:#fff; border-color: transparent; }
 html.dark .btn-primary{
@@ -125,13 +137,9 @@ html.dark .btn-primary{
 .btn-ghost:hover{ background: rgba(17,24,39,.05); }
 html.dark .btn-ghost:hover{ background: rgba(255,255,255,.05); }
 
-/* === BOTONES ESPECIALES === */
-
 /* WhatsApp */
 .btn-wa {
-  background: #25D366;
-  color: #fff;
-  border: none;
+  background: #25D366; color: #fff; border: none;
 }
 .btn-wa:hover { filter: brightness(1.1); transform: translateY(-1px); }
 .btn-wa:active { transform: translateY(1px) scale(.98); }
@@ -148,161 +156,69 @@ html.dark .btn-ghost:hover{ background: rgba(255,255,255,.05); }
   border-color: transparent;
   box-shadow: 0 0 0 2px rgba(201,162,39,.35);
 }
-html.dark .btn-gold {
-  color: var(--gold-2);
-  border-color: var(--gold-2);
-}
+html.dark .btn-gold { color: var(--gold-2); border-color: var(--gold-2); }
 html.dark .btn-gold:hover {
   background: linear-gradient(135deg, var(--gold-2), var(--gold-1));
   color: #111 !important;
 }
 
-/* ================== FOOTER & THEME TOGGLE ================== */
+/* ================== FOOTER ================== */
 .footer{ padding: 2rem 0 3rem; text-align: center; font-size: .9rem; color: var(--muted); }
 html.dark .footer{ color: var(--muted-d); }
 
-.theme-switch{
-  border:none;
-  background: rgba(255,255,255,.08);
-  backdrop-filter: blur(6px);
-  padding:.55rem .7rem;
-  border-radius: 999px;
-  cursor:pointer;
-  font-size: 1.25rem;
-  transition: all .25s ease;
-}
-html.dark .theme-switch{ background: rgba(0,0,0,.35); }
-.theme-switch:hover{ transform: scale(1.08); }
-/* ====== Sunrise / Sunset page transition ====== */
-html.theme-sunrise body::after,
-html.theme-sunset body::after{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 2147483000; /* por encima de todo, sin bloquear clicks */
-  border-radius: 0;
-  opacity: 0;
-}
-
-/* Amanecer (paso a CLARO): luz cálida sube desde abajo */
-html.theme-sunrise body::after{
-  background:
-    radial-gradient(1200px 600px at 50% 110%,
-      rgba(229,196,85,.55) 0%,
-      rgba(201,162,39,.35) 25%,
-      rgba(255,255,255,.0) 60%);
-  animation: sunriseSweep 700ms ease both;
-}
-
-/* Anochecer (paso a OSCURO): brillo dorado desciende desde arriba */
-html.theme-sunset body::after{
-  background:
-    radial-gradient(1200px 600px at 50% -10%,
-      rgba(201,162,39,.55) 0%,
-      rgba(229,196,85,.35) 25%,
-      rgba(0,0,0,.0) 60%);
-  animation: sunsetSweep 700ms ease both;
-}
-
-@keyframes sunriseSweep {
-  0%   { opacity: 0; transform: translateY(12%); }
-  35%  { opacity: .75; }
-  100% { opacity: 0; transform: translateY(0%); }
-}
-
-@keyframes sunsetSweep {
-  0%   { opacity: 0; transform: translateY(-12%); }
-  35%  { opacity: .75; }
-  100% { opacity: 0; transform: translateY(0%); }
-}
-
-/* Accesibilidad: si el usuario prefiere menos movimiento, minimizamos animación */
-@media (prefers-reduced-motion: reduce) {
-  html.theme-sunrise body::after,
-  html.theme-sunset body::after{
-    animation-duration: 250ms;
-    opacity: .25 !important;
-    transform: none !important;
-  }
-}
-/* ===== Theme Toggle — minimal, vidrio elegante ===== */
-.theme-toggle{
-  -webkit-tap-highlight-color: transparent;
-  border: 0; background: transparent; padding: 0;
-  cursor: pointer; line-height: 0;
-  display: inline-block;
-}
+/* ================== THEME TOGGLE (botón) ================== */
+.theme-toggle{ -webkit-tap-highlight-color: transparent; border:0; background:transparent; padding:0; cursor:pointer; line-height:0; display:inline-block; }
 .tt-track{
-  width: 78px; height: 40px;
-  border-radius: 999px; position: relative; overflow: hidden;
+  width: 78px; height: 40px; border-radius: 999px; position: relative; overflow: hidden;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(17,24,39,.14);
   background:
     radial-gradient(120% 140% at 50% 120%, rgba(229,196,85,.25), transparent 60%),
     linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.75));
   box-shadow: 0 10px 28px -16px rgba(17,24,39,.35);
-  transition: border-color .3s ease, box-shadow .3s ease, background .3s ease;
 }
 html.dark .tt-track{
   border-color: rgba(255,255,255,.12);
   background:
     radial-gradient(120% 140% at 50% -30%, rgba(229,196,85,.14), transparent 60%),
     linear-gradient(180deg, rgba(20,21,23,.72), rgba(14,15,17,.72));
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.05) inset,
-    0 18px 42px -20px rgba(0,0,0,.85);
+  box-shadow: 0 1px 0 rgba(255,255,255,.05) inset, 0 18px 42px -20px rgba(0,0,0,.85);
 }
-
-/* Knob */
 .tt-knob{
-  position: absolute; top: 50%; transform: translateY(-50%);
-  width: 28px; height: 28px; border-radius: 999px;
-  display: grid; place-items: center;
-  transition: transform .55s cubic-bezier(.2,.8,.2,1), background .5s ease, box-shadow .45s ease;
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.7) inset,
-    0 10px 22px -12px rgba(17,24,39,.45);
+  position:absolute; top:50%; transform:translateY(-50%); left:8px;
+  width:28px; height:28px; border-radius:999px; display:grid; place-items:center;
+  box-shadow: 0 1px 0 rgba(255,255,255,.7) inset, 0 10px 22px -12px rgba(17,24,39,.45);
   background: radial-gradient(circle at 35% 35%, #fff 5%, #e9edf4 45%, #b9c7df 85%);
-  left: 8px;                 /* posición en modo claro */
+  transition: transform .55s cubic-bezier(.2,.8,.2,1), background .5s ease, box-shadow .45s ease;
 }
 .tt-knob.is-dark{
-  transform: translate(38px, -50%);    /* desliza a la derecha */
+  transform: translate(38px, -50%);
   background: radial-gradient(circle at 40% 35%, #fff 5%, #FFD36A 45%, #C9A227 85%);
-  box-shadow:
-    0 1px 0 rgba(255,255,255,.35) inset,
-    0 12px 28px -14px rgba(0,0,0,.8);
+  box-shadow: 0 1px 0 rgba(255,255,255,.35) inset, 0 12px 28px -14px rgba(0,0,0,.8);
 }
+.tt-icon{ width:16px; height:16px; fill:currentColor; stroke:currentColor; color:#273548; }
+html.dark .tt-icon{ color:#2b2616; }
 
-/* Icono dentro del knob */
-.tt-icon{
-  width: 16px; height: 16px;
-  fill: currentColor; stroke: currentColor; color: #273548; /* tono serio */
+/* Barrido amanecer/anochecer de página */
+html.theme-sunrise body::after,
+html.theme-sunset body::after{
+  content:""; position: fixed; inset: 0; pointer-events: none; z-index: 2147483000; opacity:0;
 }
-html.dark .tt-icon{ color: #2b2616; } /* sol más cálido en oscuro */
+html.theme-sunrise body::after{
+  background: radial-gradient(1200px 600px at 50% 110%, rgba(229,196,85,.55) 0%, rgba(201,162,39,.35) 25%, rgba(255,255,255,0) 60%);
+  animation: sunriseSweep 700ms ease both;
+}
+html.theme-sunset body::after{
+  background: radial-gradient(1200px 600px at 50% -10%, rgba(201,162,39,.55) 0%, rgba(229,196,85,.35) 25%, rgba(0,0,0,0) 60%);
+  animation: sunsetSweep 700ms ease both;
+}
+@keyframes sunriseSweep { 0%{opacity:0; transform:translateY(12%);} 35%{opacity:.75;} 100%{opacity:0; transform:translateY(0);} }
+@keyframes sunsetSweep { 0%{opacity:0; transform:translateY(-12%);} 35%{opacity:.75;} 100%{opacity:0; transform:translateY(0);} }
 
-/* Micro-animaciones “dawn / dusk” sutiles (track) */
-@keyframes ttDawn {
-  0% { background-position: 50% 120%, 50% 0%; }
-  100%{ background-position: 50% 100%, 50% 0%; }
-}
-@keyframes ttDusk {
-  0% { background-position: 50% -30%, 50% 0%; }
-  100%{ background-position: 50% -10%, 50% 0%; }
-}
-.tt-anim-dawn{ animation: ttDawn .9s ease both; }
-.tt-anim-dusk{ animation: ttDusk .9s ease both; }
+/* ================== NAVBAR GLASS ================== */
+:root { --nav-h: 64px; }
+@media (min-width: 768px){ :root{ --nav-h: 72px; } }
 
-/* Transición general de la UI para que el cambio sea sedoso */
-:root{
-  --ui-transition: color .35s ease, background-color .35s ease, border-color .35s ease, box-shadow .35s ease;
-}
-*{ transition: var(--ui-transition); }
-@media (prefers-reduced-motion: reduce){
-  *{ transition: none !important; animation: none !important; }
-}
-
-/* ===== NAVBAR GLASS ELEGANTE ===== */
 .nav-glass{
   position: sticky; top: 0; z-index: 50;
   backdrop-filter: blur(12px);
@@ -316,134 +232,46 @@ html.dark .nav-glass{
 }
 .nav-inner{
   max-width: 1100px; margin-inline:auto;
+  height: var(--nav-h);
   display:flex; align-items:center; justify-content:space-between;
-  gap:.75rem; padding:.55rem 1rem;
+  gap:.75rem; padding-inline: clamp(12px, 4vw, 24px);
 }
-.brand{
-  font-weight:700; letter-spacing:.2px; text-decoration:none;
-  color: inherit;
-}
+.brand{ font-weight:700; letter-spacing:.2px; text-decoration:none; color:inherit; }
 
-/* desktop links */
-.nav-links{
-  display:none; gap:1rem; align-items:center;
-}
-@media (min-width: 900px){ .nav-links{ display:flex; } }
+.nav-links{ display:none; gap:1rem; align-items:center; }
+@media (min-width: 1024px){ .nav-links{ display:flex; } }
 
 .nav-link{
   position:relative; display:inline-flex; align-items:center; padding:.35rem .4rem;
   color: color-mix(in oklab, currentColor 86%, transparent); text-decoration:none;
-  transition: color .25s ease;
 }
 .nav-link:hover{ color: inherit; }
 .nav-underline{
   position:absolute; left:10%; right:10%; bottom:-2px; height:2px; border-radius:999px;
   background: linear-gradient(90deg, var(--gold-2), var(--gold-1));
-  transform: scaleX(0); transform-origin: center;
-  transition: transform .25s ease;
+  transform: scaleX(0); transform-origin: center; transition: transform .25s ease;
 }
 .nav-link:hover .nav-underline{ transform: scaleX(1); }
 
-/* actions (toggle + burger) */
 .nav-actions{ display:flex; align-items:center; gap:.5rem; }
 
-/* burger */
+/* Hamburguesa */
 .hamburger{
-  display:inline-flex; flex-direction:column; gap:4px; padding:8px;
-  border-radius:10px; border:1px solid rgba(17,24,39,.12);
-  background: rgba(255,255,255,.85);
-}
-html.dark .hamburger{ border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.06); }
-.hamburger span{ width:18px; height:2px; border-radius:999px; background: currentColor; opacity:.9; }
-@media (min-width: 900px){ .hamburger{ display:none; } }
-
-/* drawer mobile */
-.nav-drawer{
-  display:grid; gap:.25rem; padding:.35rem .75rem .75rem;
-  border-bottom:1px solid rgba(17,24,39,.08);
-  background: color-mix(in oklab, var(--panel) 85%, transparent);
-  max-height:0; overflow:hidden; transition:max-height .35s ease;
-}
-html.dark .nav-drawer{
-  border-bottom-color: rgba(255,255,255,.10);
-  background: color-mix(in oklab, #121315ee 85%, transparent);
-}
-.nav-drawer.open{ max-height: 280px; }
-.drawer-link{
-  padding:.6rem .75rem; border-radius:12px; text-decoration:none; color:inherit;
-  display:block; position:relative;
-}
-.drawer-link::after{
-  content:""; position:absolute; left:.75rem; right:.75rem; bottom:.4rem; height:2px; border-radius:999px;
-  background: linear-gradient(90deg, var(--gold-2), var(--gold-1)); opacity:.0; transition:opacity .25s ease;
-}
-.drawer-link:hover::after{ opacity:.95; }
-
-/* ===== Detalles dorados en subtítulos (restaurados y pulidos) ===== */
-/* ya tienes .kicker; reforzamos visibilidad y consistencia */
-.kicker{
-  color: var(--muted);
-  display:inline-block; opacity:1;
-}
-.kicker::after{
-  content:""; display:block; margin:.55rem auto 0;
-  width:90px; height:3px; border-radius:999px;
-  background: linear-gradient(90deg, var(--gold-2), var(--gold-1));
-  opacity:.95;
-}
-html.dark .kicker{ color: var(--muted-d) !important; }
-.btn svg {
-  margin-right: 6px;
-  flex-shrink: 0;
-}
-.btn span {
-  line-height: 1;
-}
-.btn {
-  font-size: 0.9rem;
-  padding: 0.55rem 0.9rem;
-}
-/* ==== NAV – ajustes responsive para que el toggle no tape el menú ==== */
-:root { --nav-h: 64px; }           /* alto de la barra en mobile */
-@media (min-width: 768px){ :root{ --nav-h: 72px; } }
-
-.nav-glass { position: sticky; top: 0; z-index: 50; }
-.nav-inner {
-  height: var(--nav-h);
-  display: flex; align-items: center; justify-content: space-between;
-  gap: .75rem; padding-inline: clamp(12px, 4vw, 24px);
-}
-
-/* Links desktop */
-.nav-links { display: none; gap: 1rem; }
-@media (min-width: 1024px){ .nav-links { display: flex; } }
-
-/* Acciones derechas */
-.nav-actions { display: flex; align-items: center; gap: .5rem; }
-
-/* Hamburguesa solo en mobile/tablet */
-.hamburger {
-  display: inline-flex; flex-direction: column; gap: 4px;
-  width: 42px; height: 34px; align-items: center; justify-content: center;
-  border-radius: 12px; border: 1px solid rgba(17,24,39,.12);
+  display:inline-flex; flex-direction:column; gap:4px; width:42px; height:34px;
+  align-items:center; justify-content:center;
+  border-radius:12px; border:1px solid rgba(17,24,39,.12);
   background: rgba(255,255,255,.75); backdrop-filter: blur(8px);
   transition: background .2s ease, transform .15s ease;
 }
-.hamburger span{ width: 20px; height: 2px; border-radius: 2px; background: #111; }
+.hamburger span{ width:20px; height:2px; border-radius:2px; background:#111; }
 html.dark .hamburger{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.14); }
-html.dark .hamburger span{ background: #e5e7eb; }
+html.dark .hamburger span{ background:#e5e7eb; }
 .hamburger:active{ transform: scale(.98); }
-@media (min-width: 1024px){ .hamburger { display: none; } }
+@media (min-width: 1024px){ .hamburger{ display:none; } }
 
-/* Wrapper del toggle para poder reducirlo un poco en mobile */
-.toggle-wrap { display: inline-flex; }
-@media (max-width: 767.98px){
-  .toggle-wrap > * { transform: scale(.92); transform-origin: right center; }
-}
-
-/* Drawer móvil: arranca debajo de la barra */
+/* Drawer mobile */
 .nav-drawer{
-  position: fixed; left: 0; right: 0;
+  position: fixed; left: 0; right: 0; top: var(--nav-h);
   height: calc(100dvh - var(--nav-h));
   background: color-mix(in oklab, var(--bg) 82%, #000 0%);
   border-top: 1px solid rgba(17,24,39,.08);
@@ -451,15 +279,13 @@ html.dark .hamburger span{ background: #e5e7eb; }
   transform: translateY(-8px);
   opacity: 0; pointer-events: none;
   transition: opacity .18s ease, transform .18s ease;
-  z-index: 40;          /* debajo de la barra (50), encima del contenido */
+  z-index: 60; /* por encima del toggle flotante */
 }
 html.dark .nav-drawer{
   background: color-mix(in oklab, var(--bg-d) 88%, #000 0%);
   border-top-color: rgba(255,255,255,.08);
 }
-.nav-drawer.open{
-  opacity: 1; transform: translateY(0); pointer-events: auto;
-}
+.nav-drawer.open{ opacity:1; transform:translateY(0); pointer-events:auto; }
 
 .drawer-link{
   display:block; padding:14px 4px; font-size:1.05rem;
@@ -467,21 +293,13 @@ html.dark .nav-drawer{
 }
 html.dark .drawer-link{ border-bottom-color: rgba(255,255,255,.10); }
 .drawer-link:last-child{ border-bottom: none; }
-/* --- FIX: toggle no debe tapar el drawer en mobile --- */
-.nav-glass { position: sticky; top: 0; z-index: 40; }
-.nav-drawer { z-index: 60; }           /* por encima del header */
-.nav-actions { z-index: 45; }
 
-/* En mobile, al abrir el drawer se oculta suavemente el toggle
-   (sigue al lado del hamburguer cuando está cerrado). */
-@media (max-width: 768px){
-  .nav-glass.drawer-open .t-mobile-toggle{
-    opacity: 0;
-    transform: translateX(6px) scale(.96);
-    pointer-events: none;
-    transition: opacity .2s ease, transform .2s ease;
-  }
-  .t-mobile-toggle{
-    transition: opacity .2s ease, transform .2s ease;
-  }
+/* ================== TOGGLE FLOTANTE (solo mobile) ================== */
+.theme-float{
+  position: fixed;
+  z-index: 55;                 /* debajo del drawer (60) y sobre contenido */
+  padding: 4px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.06) inset;
+  backdrop-filter: blur(6px);
 }

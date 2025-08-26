@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import ThemeFloatMobile from "@/components/ThemeFloatMobile";
 
 const LINKS = [
   { href: "#quien-soy", label: "Quién soy" },
@@ -14,14 +15,12 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // cerrar menú al navegar
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
     return () => window.removeEventListener("hashchange", close);
   }, []);
 
-  // scroll suave
   const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (e.currentTarget.getAttribute("href") || "").trim();
     if (!href.startsWith("#")) return;
@@ -33,47 +32,51 @@ export default function Navbar() {
   };
 
   return (
-    <header className={`nav-glass ${open ? "drawer-open" : ""}`}>
-      <div className="nav-inner">
-        <a href="#" className="brand">Martín Paredes</a>
+    <>
+      <header className={`nav-glass ${open ? "drawer-open" : ""}`}>
+        <div className="nav-inner">
+          <a href="#" className="brand">Martín Paredes</a>
 
-        {/* desktop */}
-        <nav className="nav-links">
+          <nav className="nav-links">
+            {LINKS.map(l => (
+              <a key={l.href} href={l.href} onClick={onNav} className="nav-link">
+                <span>{l.label}</span>
+                <i className="nav-underline" aria-hidden />
+              </a>
+            ))}
+          </nav>
+
+          <div className="nav-actions">
+            {/* Toggle en desktop; en mobile lo maneja el flotante */}
+            <div className="hidden md:block">
+              <ThemeToggle />
+            </div>
+
+            <button
+              className={`hamburger ${open ? "is-open" : ""}`}
+              aria-label="Menú"
+              aria-expanded={open}
+              onClick={() => setOpen(v => !v)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </div>
+        </div>
+
+        {/* drawer mobile dentro del header */}
+        <div className={`nav-drawer ${open ? "open" : ""}`}>
           {LINKS.map(l => (
-            <a key={l.href} href={l.href} onClick={onNav} className="nav-link">
-              <span>{l.label}</span>
-              <i className="nav-underline" aria-hidden />
+            <a key={l.href} href={l.href} onClick={onNav} className="drawer-link">
+              {l.label}
             </a>
           ))}
-        </nav>
-
-        <div className="nav-actions">
-          {/* wrapper para poder ocultarlo cuando el drawer está abierto en mobile */}
-          <div className="t-mobile-toggle">
-            <ThemeToggle />
-          </div>
-
-          <button
-            className={`hamburger ${open ? "is-open" : ""}`}
-            aria-label="Menú"
-            aria-expanded={open}
-            onClick={() => setOpen(v => !v)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
         </div>
-      </div>
+      </header>
 
-      {/* mobile drawer */}
-      <div className={`nav-drawer ${open ? "open" : ""}`}>
-        {LINKS.map(l => (
-          <a key={l.href} href={l.href} onClick={onNav} className="drawer-link">
-            {l.label}
-          </a>
-        ))}
-      </div>
-    </header>
+      {/* Toggle flotante SOLO en mobile */}
+      <ThemeFloatMobile />
+    </>
   );
 }
