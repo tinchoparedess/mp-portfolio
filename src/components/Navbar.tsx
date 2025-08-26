@@ -1,7 +1,8 @@
 "use client";
-import ThemeToggle from "./ThemeToggle";
+import { useEffect, useState } from "react";
+import ThemeToggle from "@/components/ThemeToggle";
 
-const items = [
+const LINKS = [
   { href: "#quien-soy", label: "Quién soy" },
   { href: "#highlights", label: "Highlights" },
   { href: "#escenas", label: "Escenas" },
@@ -11,23 +12,64 @@ const items = [
 ];
 
 export default function Navbar() {
-  return (
-    <header className="sticky top-0 z-50 backdrop-blur bg-white/65 dark:bg-[#0B0B0C]/70 border-b border-black/10 dark:border-white/10">
-      <nav className="mx-auto max-w-5xl px-6 h-14 flex items-center justify-between">
-        <a href="#top" className="font-medium">Martín Paredes</a>
+  const [open, setOpen] = useState(false);
 
-        <div className="hidden md:flex items-center gap-6 text-sm">
-          {items.map((it) => (
-            <a key={it.href} href={it.href} className="text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white transition">
-              {it.label}
+  // cerrar menú al navegar
+  useEffect(() => {
+    const close = () => setOpen(false);
+    window.addEventListener("hashchange", close);
+    return () => window.removeEventListener("hashchange", close);
+  }, []);
+
+  // scroll suave
+  const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const href = (e.currentTarget.getAttribute("href") || "").trim();
+    if (!href.startsWith("#")) return;
+    e.preventDefault();
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setOpen(false);
+    history.replaceState(null, "", href);
+  };
+
+  return (
+    <header className="nav-glass">
+      <div className="nav-inner">
+        <a href="#" className="brand">Martín Paredes</a>
+
+        {/* desktop */}
+        <nav className="nav-links">
+          {LINKS.map(l => (
+            <a key={l.href} href={l.href} onClick={onNav} className="nav-link">
+              <span>{l.label}</span>
+              <i className="nav-underline" aria-hidden />
             </a>
           ))}
-        </div>
+        </nav>
 
-        <div className="ml-4">
+        <div className="nav-actions">
           <ThemeToggle />
+          <button
+            className="hamburger"
+            aria-label="Menú"
+            aria-expanded={open}
+            onClick={() => setOpen(v => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
-      </nav>
+      </div>
+
+      {/* mobile drawer */}
+      <div className={`nav-drawer ${open ? "open" : ""}`}>
+        {LINKS.map(l => (
+          <a key={l.href} href={l.href} onClick={onNav} className="drawer-link">
+            {l.label}
+          </a>
+        ))}
+      </div>
     </header>
   );
 }
