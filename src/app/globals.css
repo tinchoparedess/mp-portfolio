@@ -403,3 +403,67 @@ html.dark .kicker{ color: var(--muted-d) !important; }
   font-size: 0.9rem;
   padding: 0.55rem 0.9rem;
 }
+/* ==== NAV – ajustes responsive para que el toggle no tape el menú ==== */
+:root { --nav-h: 64px; }           /* alto de la barra en mobile */
+@media (min-width: 768px){ :root{ --nav-h: 72px; } }
+
+.nav-glass { position: sticky; top: 0; z-index: 50; }
+.nav-inner {
+  height: var(--nav-h);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .75rem; padding-inline: clamp(12px, 4vw, 24px);
+}
+
+/* Links desktop */
+.nav-links { display: none; gap: 1rem; }
+@media (min-width: 1024px){ .nav-links { display: flex; } }
+
+/* Acciones derechas */
+.nav-actions { display: flex; align-items: center; gap: .5rem; }
+
+/* Hamburguesa solo en mobile/tablet */
+.hamburger {
+  display: inline-flex; flex-direction: column; gap: 4px;
+  width: 42px; height: 34px; align-items: center; justify-content: center;
+  border-radius: 12px; border: 1px solid rgba(17,24,39,.12);
+  background: rgba(255,255,255,.75); backdrop-filter: blur(8px);
+  transition: background .2s ease, transform .15s ease;
+}
+.hamburger span{ width: 20px; height: 2px; border-radius: 2px; background: #111; }
+html.dark .hamburger{ background: rgba(255,255,255,.07); border-color: rgba(255,255,255,.14); }
+html.dark .hamburger span{ background: #e5e7eb; }
+.hamburger:active{ transform: scale(.98); }
+@media (min-width: 1024px){ .hamburger { display: none; } }
+
+/* Wrapper del toggle para poder reducirlo un poco en mobile */
+.toggle-wrap { display: inline-flex; }
+@media (max-width: 767.98px){
+  .toggle-wrap > * { transform: scale(.92); transform-origin: right center; }
+}
+
+/* Drawer móvil: arranca debajo de la barra */
+.nav-drawer{
+  position: fixed; left: 0; right: 0;
+  height: calc(100dvh - var(--nav-h));
+  background: color-mix(in oklab, var(--bg) 82%, #000 0%);
+  border-top: 1px solid rgba(17,24,39,.08);
+  padding: 14px 16px 24px;
+  transform: translateY(-8px);
+  opacity: 0; pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+  z-index: 40;          /* debajo de la barra (50), encima del contenido */
+}
+html.dark .nav-drawer{
+  background: color-mix(in oklab, var(--bg-d) 88%, #000 0%);
+  border-top-color: rgba(255,255,255,.08);
+}
+.nav-drawer.open{
+  opacity: 1; transform: translateY(0); pointer-events: auto;
+}
+
+.drawer-link{
+  display:block; padding:14px 4px; font-size:1.05rem;
+  border-bottom: 1px dashed rgba(17,24,39,.12);
+}
+html.dark .drawer-link{ border-bottom-color: rgba(255,255,255,.10); }
+.drawer-link:last-child{ border-bottom: none; }

@@ -33,13 +33,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className="nav-glass">
+    <header className="nav-glass sticky top-0 z-50">
       <div className="nav-inner">
         <a href="#" className="brand">Martín Paredes</a>
 
-        {/* desktop */}
+        {/* Desktop */}
         <nav className="nav-links">
-          {LINKS.map(l => (
+          {LINKS.map((l) => (
             <a key={l.href} href={l.href} onClick={onNav} className="nav-link">
               <span>{l.label}</span>
               <i className="nav-underline" aria-hidden />
@@ -47,24 +47,34 @@ export default function Navbar() {
           ))}
         </nav>
 
+        {/* Acciones derecha */}
         <div className="nav-actions">
-          <ThemeToggle />
+          {/* En mobile: hamburguesa + toggle uno al lado del otro */}
           <button
             className="hamburger"
-            aria-label="Menú"
+            aria-label="Abrir menú"
             aria-expanded={open}
-            onClick={() => setOpen(v => !v)}
+            onClick={() => setOpen((v) => !v)}
           >
             <span />
             <span />
             <span />
           </button>
+
+          {/* El toggle va después de la hamburguesa en mobile */}
+          <div className="toggle-wrap">
+            <ThemeToggle />
+          </div>
         </div>
       </div>
 
-      {/* mobile drawer */}
-      <div className={`nav-drawer ${open ? "open" : ""}`}>
-        {LINKS.map(l => (
+      {/* Mobile drawer */}
+      <div
+        className={`nav-drawer ${open ? "open" : ""}`}
+        // top = alto de la barra, para que no la tape
+        style={{ top: "var(--nav-h)" }}
+      >
+        {LINKS.map((l) => (
           <a key={l.href} href={l.href} onClick={onNav} className="drawer-link">
             {l.label}
           </a>
