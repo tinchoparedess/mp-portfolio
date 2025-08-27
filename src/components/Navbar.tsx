@@ -1,6 +1,8 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 const LINKS = [
   { href: "#quien-soy", label: "Quién soy" },
@@ -14,14 +16,12 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // cerrar menú al navegar (hash)
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
     return () => window.removeEventListener("hashchange", close);
   }, []);
 
-  // scroll suave dentro de la página
   const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (e.currentTarget.getAttribute("href") || "").trim();
     if (!href.startsWith("#")) return;
@@ -35,12 +35,12 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: Toggle (en lugar del brand) */}
-        <div aria-hidden className="flex items-center">
+        {/* IZQUIERDA: Theme toggle */}
+        <div className="toggle-wrap">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (desktop): links */}
+        {/* CENTRO (desktop) */}
         <nav className="nav-links">
           {LINKS.map((l) => (
             <a key={l.href} href={l.href} onClick={onNav} className="nav-link">
@@ -50,8 +50,9 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* DERECHA: hamburguesa (mobile) */}
+        {/* DERECHA: Idioma + Hamburguesa */}
         <div className="nav-actions">
+          <LanguageSwitcher />
           <button
             className="hamburger"
             aria-label="Menú"
@@ -67,10 +68,11 @@ export default function Navbar() {
 
       {/* Drawer mobile */}
       <div className={`nav-drawer ${open ? "open" : ""}`}>
-        {/* Nombre dentro del menú móvil, si querés agregarlo: */}
-        <div className="px-2 pb-2 text-base/none font-semibold opacity-80">
-          Martín Paredes
+        <div className="mb-2">
+          <div className="opacity-70 text-sm mb-1">Idioma</div>
+          <LanguageSwitcher variant="pills" />
         </div>
+
         {LINKS.map((l) => (
           <a key={l.href} href={l.href} onClick={onNav} className="drawer-link">
             {l.label}
