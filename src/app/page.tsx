@@ -2,11 +2,11 @@
 
 import Navbar from "@/components/Navbar";
 import { useI18n } from "@/i18n/I18nProvider";
+import GuestbookSection from "@/components/GuestbookSection"; // ⬅️ nuevo import
 
 export default function Page() {
   const { t } = useI18n();
 
-  // Puedes traducir estos arrays más adelante si querés
   const highlights = ["Adaptabilidad", "Comunicación / Idiomas", "Hospitalidad con alma"];
   const escenas = [
     { titulo: "Cortina d’Ampezzo", texto: "(placeholder) Precisión y ritmo." },
@@ -108,6 +108,9 @@ export default function Page() {
             ))}
           </div>
         </section>
+
+        {/* VOCES CERCANAS */}
+        <GuestbookSection />
 
         {/* CONTACTO */}
         <section id="contacto" className="section text-center">
