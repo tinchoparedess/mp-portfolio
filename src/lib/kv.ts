@@ -1,4 +1,2 @@
-// src/lib/kv.ts
-import { kv } from "@vercel/kv";
-
-export default kv;
+// Re-export limpio del cliente de KV
+export { kv } from "@vercel/kv";
