@@ -11,52 +11,53 @@ export default function Navbar() {
   return (
     <nav className="nav-glass">
       <div className="nav-inner">
-        {/* Botón burger (móvil) */}
-        <button
-          className="hamburger"
-          onClick={() => setOpen(!open)}
-          aria-label="Menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
-        {/* Acciones (desktop) */}
-        <div className="nav-actions">
+        {/* IZQUIERDA: toggle tema */}
+        <div className="nav-left">
           <ThemeToggle />
         </div>
 
-        {/* Links desktop */}
+        {/* CENTRO (solo desktop): links */}
         <div className="nav-links">
           <Link href="#quien-soy" className="nav-link">
-            Quién soy
+            <span>Quién soy</span>
             <span className="nav-underline" />
           </Link>
           <Link href="#highlights" className="nav-link">
-            Highlights
+            <span>Highlights</span>
             <span className="nav-underline" />
           </Link>
           <Link href="#vision" className="nav-link">
-            Visión
+            <span>Visión</span>
             <span className="nav-underline" />
           </Link>
           <Link href="#notas" className="nav-link">
-            Notas
+            <span>Notas</span>
             <span className="nav-underline" />
           </Link>
           <Link href="#ideas" className="nav-link">
-            Ideas
+            <span>Ideas</span>
             <span className="nav-underline" />
           </Link>
           <Link href="#contacto" className="nav-link">
-            Contacto
+            <span>Contacto</span>
             <span className="nav-underline" />
           </Link>
         </div>
 
-        {/* Switcher idiomas */}
-        <LanguageSwitcher variant="button" />
+        {/* DERECHA: idioma + hamburguesa */}
+        <div className="nav-right">
+          <LanguageSwitcher variant="button" />
+          <button
+            className="hamburger"
+            aria-label="Abrir menú"
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
       {/* Drawer móvil */}
@@ -103,7 +104,9 @@ export default function Navbar() {
         >
           Contacto
         </Link>
-        <div style={{ marginTop: 12 }}>
+
+        {/* idioma en formato pastillas dentro del drawer */}
+        <div style={{ padding: "6px 6px 10px" }}>
           <LanguageSwitcher variant="pills" />
         </div>
       </div>
