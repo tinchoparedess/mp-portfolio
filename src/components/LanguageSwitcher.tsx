@@ -2,43 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useI18n } from "@/i18n/I18nProvider";
-import ReactCountryFlag from "react-country-flag";
 
 type Lang = "es" | "en" | "pt" | "it";
 
-const OPTIONS: { code: Lang; cc: "ES" | "GB" | "BR" | "IT"; name: string }[] = [
-  { code: "es", cc: "ES", name: "Español" },
-  { code: "en", cc: "GB", name: "English" },
-  { code: "pt", cc: "BR", name: "Português" },
-  { code: "it", cc: "IT", name: "Italiano" },
+const OPTIONS: { code: Lang; flag: string; name: string }[] = [
+  { code: "es", flag: "🇪🇸", name: "Español" },
+  { code: "en", flag: "🇬🇧", name: "English" },
+  { code: "pt", flag: "🇧🇷", name: "Português" },
+  { code: "it", flag: "🇮🇹", name: "Italiano" },
 ];
-
-function Flag({ cc }: { cc: "ES" | "GB" | "BR" | "IT" }) {
-  return (
-    <ReactCountryFlag
-      countryCode={cc}
-      svg
-      aria-label={cc}
-      style={{
-        width: "1.05rem",
-        height: "1.05rem",
-        borderRadius: 2,
-        boxShadow: "0 0 0 1px rgba(0,0,0,.08)",
-      }}
-    />
-  );
-}
 
 export default function LanguageSwitcher({
   variant = "button", // "button" (navbar) | "pills" (drawer mobile)
-}: {
-  variant?: "button" | "pills";
-}) {
+}: { variant?: "button" | "pills" }) {
   const { lang, setLang } = useI18n();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const current = OPTIONS.find((o) => o.code === lang) ?? OPTIONS[0];
+  const current = OPTIONS.find(o => o.code === lang) ?? OPTIONS[0];
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -58,7 +39,7 @@ export default function LanguageSwitcher({
   if (variant === "pills") {
     return (
       <div className="flex gap-1 flex-wrap">
-        {OPTIONS.map((o) => (
+        {OPTIONS.map(o => (
           <button
             key={o.code}
             onClick={() => choose(o.code)}
@@ -67,14 +48,14 @@ export default function LanguageSwitcher({
               padding: "6px 10px",
               display: "inline-flex",
               alignItems: "center",
-              gap: 8,
+              gap: 6,
               borderRadius: 10,
               fontSize: ".9rem",
               border: "1px solid rgba(17,24,39,.12)",
               opacity: o.code === lang ? 1 : 0.8,
             }}
           >
-            <Flag cc={o.cc} />
+            <span style={{ fontSize: "1rem" }}>{o.flag}</span>
             <span>{o.code.toUpperCase()}</span>
           </button>
         ))}
@@ -84,56 +65,45 @@ export default function LanguageSwitcher({
 
   // variant = "button"
   return (
-    <div ref={ref} style={{ position: "relative" }}>
+    <div ref={ref} className="lang-wrap">
       <button
         className="btn btn-ghost"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen(v => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
+        title="Idioma"
         style={{ padding: ".45rem .65rem", borderRadius: 12 }}
       >
-        <Flag cc={current.cc} />
+        <span style={{ fontSize: "1rem", lineHeight: 1 }}>{current.flag}</span>
         <span style={{ fontWeight: 600, marginLeft: 6, fontSize: ".92rem" }}>
           {current.code.toUpperCase()}
         </span>
       </button>
 
-      {open && (
-        <div
-          role="menu"
-          className="card"
-          style={{
-            position: "absolute",
-            right: 0,
-            top: "calc(100% + 8px)",
-            padding: 8,
-            minWidth: 180,
-            zIndex: 60,
-          }}
-        >
-          {OPTIONS.map((o) => (
-            <button
-              key={o.code}
-              onClick={() => choose(o.code)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "10px 8px",
-                fontSize: ".95rem",
-                border: "none",
-                background: "transparent",
-                width: "100%",
-                textAlign: "left",
-                opacity: o.code === lang ? 1 : 0.9,
-              }}
-            >
-              <Flag cc={o.cc} />
-              <span>{o.name}</span>
-            </button>
-          ))}
-        </div>
-      )}
+      <div
+        role="menu"
+        className={`card lang-menu ${open ? "show" : ""}`}
+      >
+        {OPTIONS.map(o => (
+          <button
+            key={o.code}
+            onClick={() => choose(o.code)}
+            className="drawer-link"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              padding: "10px 8px",
+              borderBottom: "none",
+              fontSize: ".95rem",
+              opacity: o.code === lang ? 1 : 0.9,
+            }}
+          >
+            <span style={{ fontSize: "1rem" }}>{o.flag}</span>
+            <span>{o.name}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
