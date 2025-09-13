@@ -1,51 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
-import LanguageSwitcher from "./LanguageSwitcher";
+import ThemeToggle from "@/components/ThemeToggle";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+
+const LINKS = [
+  { href: "#quien-soy", label: "Quién soy" },
+  { href: "#highlights", label: "Highlights" },
+  { href: "#escenas", label: "Escenas" },
+  { href: "#vision", label: "Visión" },
+  { href: "#ideas", label: "Ideas" },
+  { href: "#contacto", label: "Contacto" },
+];
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
+  // Cerrar el drawer si cambia el hash o se hace click fuera
+  useEffect(() => {
+    const close = () => setOpen(false);
+    window.addEventListener("hashchange", close);
+    return () => window.removeEventListener("hashchange", close);
+  }, []);
+
+  // Scroll suave interno
+  const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const href = (e.currentTarget.getAttribute("href") || "").trim();
+    if (!href.startsWith("#")) return;
+    e.preventDefault();
+    const el = document.querySelector(href);
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    setOpen(false);
+    history.replaceState(null, "", href);
+  };
+
   return (
-    <nav className="nav-glass">
+    <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: toggle tema */}
+        {/* IZQUIERDA: toggle de tema */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (solo desktop): links */}
-        <div className="nav-links">
-          <Link href="#quien-soy" className="nav-link">
-            <span>Quién soy</span>
-            <span className="nav-underline" />
-          </Link>
-          <Link href="#highlights" className="nav-link">
-            <span>Highlights</span>
-            <span className="nav-underline" />
-          </Link>
-          <Link href="#vision" className="nav-link">
-            <span>Visión</span>
-            <span className="nav-underline" />
-          </Link>
-          <Link href="#notas" className="nav-link">
-            <span>Notas</span>
-            <span className="nav-underline" />
-          </Link>
-          <Link href="#ideas" className="nav-link">
-            <span>Ideas</span>
-            <span className="nav-underline" />
-          </Link>
-          <Link href="#contacto" className="nav-link">
-            <span>Contacto</span>
-            <span className="nav-underline" />
-          </Link>
-        </div>
+        {/* CENTRO (sólo desktop): links */}
+        <nav className="nav-links" aria-label="Secciones">
+          {LINKS.map((l) => (
+            <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
+              <span>{l.label}</span>
+              <i className="nav-underline" aria-hidden />
+            </Link>
+          ))}
+        </nav>
 
-        {/* DERECHA: idioma + hamburguesa */}
-        <div className="nav-right">
+        {/* DERECHA: idioma + hamburguesa (mobile) */}
+        <div className="nav-actions">
           <LanguageSwitcher variant="button" />
           <button
             className="hamburger"
@@ -62,54 +71,17 @@ export default function Navbar() {
 
       {/* Drawer móvil */}
       <div className={`nav-drawer ${open ? "open" : ""}`}>
-        <Link
-          href="#quien-soy"
-          className="drawer-link"
-          onClick={() => setOpen(false)}
-        >
-          Quién soy
-        </Link>
-        <Link
-          href="#highlights"
-          className="drawer-link"
-          onClick={() => setOpen(false)}
-        >
-          Highlights
-        </Link>
-        <Link
-          href="#vision"
-          className="drawer-link"
-          onClick={() => setOpen(false)}
-        >
-          Visión
-        </Link>
-        <Link
-          href="#notas"
-          className="drawer-link"
-          onClick={() => setOpen(false)}
-        >
-          Notas
-        </Link>
-        <Link
-          href="#ideas"
-          className="drawer-link"
-          onClick={() => setOpen(false)}
-        >
-          Ideas
-        </Link>
-        <Link
-          href="#contacto"
-          className="drawer-link"
-          onClick={() => setOpen(false)}
-        >
-          Contacto
-        </Link>
-
-        {/* idioma en formato pastillas dentro del drawer */}
-        <div style={{ padding: "6px 6px 10px" }}>
+        {/* Idiomas en formato “pills” dentro del drawer */}
+        <div className="px-1 pb-2">
           <LanguageSwitcher variant="pills" />
         </div>
+
+        {LINKS.map((l) => (
+          <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
+            {l.label}
+          </Link>
+        ))}
       </div>
-    </nav>
+    </header>
   );
 }
