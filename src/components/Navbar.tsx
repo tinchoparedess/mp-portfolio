@@ -17,14 +17,12 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Cierra el drawer si se cambia el hash o se navega
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
     return () => window.removeEventListener("hashchange", close);
   }, []);
 
-  // Scroll suave interno
   const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (e.currentTarget.getAttribute("href") || "").trim();
     if (!href.startsWith("#")) return;
@@ -38,12 +36,12 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: Toggle de tema */}
-        <div className="nav-left" aria-label="Controles de tema">
+        {/* IZQUIERDA */}
+        <div className="flex items-center gap-2">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (solo desktop): links */}
+        {/* CENTRO (desktop) */}
         <nav className="nav-links" aria-label="Secciones">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
@@ -53,13 +51,12 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* DERECHA: Idioma + Hamburguesa (mobile) */}
-        <div className="nav-actions">
+        {/* DERECHA */}
+        <div className="flex items-center gap-2">
           <LanguageSwitcher variant="button" />
-
           <button
             className="hamburger"
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-label="Abrir menú"
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
@@ -70,13 +67,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil (oculto por defecto, visible sólo en mobile cuando open=true) */}
-      <div className={`nav-drawer ${open ? "open" : ""}`} role="dialog" aria-label="Menú de navegación">
-        {/* Idiomas en “pills” dentro del drawer */}
-        <div style={{ padding: "0.35rem 0.5rem 0.5rem" }}>
+      {/* Drawer móvil */}
+      <div className={`nav-drawer ${open ? "open" : ""}`}>
+        <div className="px-1 pb-2">
           <LanguageSwitcher variant="pills" />
         </div>
-
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
             {l.label}
