@@ -1,44 +1,47 @@
+// src/components/ThemeToggle.tsx
 "use client";
+
 import { useEffect, useState } from "react";
 
 export default function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
-  const [isDark, setIsDark] = useState(false);
+  const [dark, setDark] = useState(false);
 
+  // Cargar tema guardado
   useEffect(() => {
-    setMounted(true);
-    const root = document.documentElement;
-    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)")?.matches;
-    const stored = localStorage.getItem("theme");
-    const shouldDark = stored ? stored === "dark" : prefersDark;
-    if (shouldDark) root.classList.add("dark");
-    setIsDark(shouldDark);
+    const saved = localStorage.getItem("theme");
+    if (saved) {
+      document.documentElement.classList.toggle("dark", saved === "dark");
+      setDark(saved === "dark");
+    } else {
+      // Respetar preferencia del SO la primera vez
+      const prefers = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      document.documentElement.classList.toggle("dark", prefers);
+      setDark(prefers);
+    }
   }, []);
 
-  if (!mounted) return null;
-
   const toggle = () => {
-    const root = document.documentElement;
-    const next = !isDark;
-    setIsDark(next);
-    root.classList.toggle("dark", next);
+    const next = !dark;
+    document.documentElement.classList.toggle("dark", next);
     localStorage.setItem("theme", next ? "dark" : "light");
+    setDark(next);
   };
 
   return (
     <button
+      type="button"
       onClick={toggle}
-      className="theme-switch fixed right-3 top-3 z-[20] sm:z-auto sm:relative sm:right-0 sm:top-0
-                 inline-flex items-center gap-2 rounded-2xl border px-3 py-1.5 text-sm
-                 border-neutral-300/80 bg-white/70 backdrop-blur hover:bg-white
-                 dark:border-white/15 dark:bg-white/[0.06] dark:hover:bg-white/[0.1] transition"
-      aria-label="Cambiar tema"
-      title={isDark ? "Modo oscuro" : "Modo claro"}
-      style={{ ["--gold" as any]: "#c8a951" }}
+      className="theme-toggle"
+      aria-label={dark ? "Modo claro" : "Modo oscuro"}
+      title={dark ? "Modo claro" : "Modo oscuro"}
     >
-      <span className="text-[16px]">
-        {isDark ? "🌙" : "🌞"}
-      </span>
+      <div className="tt-track">
+        <div className={`tt-knob ${dark ? "is-dark" : ""}`}>
+          <svg viewBox="0 0 24 24" className="tt-icon" aria-hidden>
+            <path d="M12 3a9 9 0 0 0 0 18 9 9 0 0 1 0-18z" />
+          </svg>
+        </div>
+      </div>
     </button>
   );
 }

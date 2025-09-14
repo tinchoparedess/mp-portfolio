@@ -1,3 +1,4 @@
+// src/components/Navbar.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -17,14 +18,12 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Cerrar el drawer al navegar por hash
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
     return () => window.removeEventListener("hashchange", close);
   }, []);
 
-  // Scroll suave interno
   const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (e.currentTarget.getAttribute("href") || "").trim();
     if (!href.startsWith("#")) return;
@@ -38,12 +37,12 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA (siempre): botón claro/oscuro */}
+        {/* IZQUIERDA: toggle */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (solo desktop): links */}
+        {/* CENTRO (desktop) */}
         <nav className="nav-links" aria-label="Secciones">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
@@ -69,19 +68,18 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil (cerrado por defecto; solo se monta si open=true) */}
-      {open && (
-        <div className="nav-drawer open">
-          <div className="px-1 pb-2">
-            <LanguageSwitcher variant="pills" />
-          </div>
-          {LINKS.map((l) => (
-            <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
-              {l.label}
-            </Link>
-          ))}
+      {/* Drawer móvil */}
+      <div className={`nav-drawer ${open ? "open" : ""}`}>
+        <div className="px-1 pb-2">
+          <LanguageSwitcher variant="pills" />
         </div>
-      )}
+
+        {LINKS.map((l) => (
+          <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
+            {l.label}
+          </Link>
+        ))}
+      </div>
     </header>
   );
 }
