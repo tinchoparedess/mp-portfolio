@@ -19,7 +19,7 @@ export default function LanguageSwitcher({
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const current = OPTIONS.find(o => o.code === lang) ?? OPTIONS[0];
+  const current = OPTIONS.find((o) => o.code === lang) ?? OPTIONS[0];
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -39,7 +39,7 @@ export default function LanguageSwitcher({
   if (variant === "pills") {
     return (
       <div className="flex gap-1 flex-wrap">
-        {OPTIONS.map(o => (
+        {OPTIONS.map((o) => (
           <button
             key={o.code}
             onClick={() => choose(o.code)}
@@ -63,12 +63,11 @@ export default function LanguageSwitcher({
     );
   }
 
-  // variant = "button"
   return (
     <div ref={ref} className="lang-wrap">
       <button
         className="btn btn-ghost"
-        onClick={() => setOpen(v => !v)}
+        onClick={() => setOpen((v) => !v)}
         aria-haspopup="menu"
         aria-expanded={open}
         title="Idioma"
@@ -80,11 +79,8 @@ export default function LanguageSwitcher({
         </span>
       </button>
 
-      <div
-        role="menu"
-        className={`card lang-menu ${open ? "show" : ""}`}
-      >
-        {OPTIONS.map(o => (
+      <div role="menu" className={`card lang-menu ${open ? "show" : ""}`}>
+        {OPTIONS.map((o) => (
           <button
             key={o.code}
             onClick={() => choose(o.code)}

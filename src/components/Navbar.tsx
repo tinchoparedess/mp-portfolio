@@ -17,7 +17,7 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
-  // Cerrar el drawer si cambia el hash o se hace click fuera
+  // Cierra el drawer si se cambia el hash o se navega
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
@@ -38,12 +38,12 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: toggle de tema */}
-        <div className="nav-left">
+        {/* IZQUIERDA: Toggle de tema */}
+        <div className="nav-left" aria-label="Controles de tema">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (sólo desktop): links */}
+        {/* CENTRO (solo desktop): links */}
         <nav className="nav-links" aria-label="Secciones">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
@@ -53,12 +53,13 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* DERECHA: idioma + hamburguesa (mobile) */}
+        {/* DERECHA: Idioma + Hamburguesa (mobile) */}
         <div className="nav-actions">
           <LanguageSwitcher variant="button" />
+
           <button
             className="hamburger"
-            aria-label="Abrir menú"
+            aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
           >
@@ -69,10 +70,10 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil */}
-      <div className={`nav-drawer ${open ? "open" : ""}`}>
-        {/* Idiomas en formato “pills” dentro del drawer */}
-        <div className="px-1 pb-2">
+      {/* Drawer móvil (oculto por defecto, visible sólo en mobile cuando open=true) */}
+      <div className={`nav-drawer ${open ? "open" : ""}`} role="dialog" aria-label="Menú de navegación">
+        {/* Idiomas en “pills” dentro del drawer */}
+        <div style={{ padding: "0.35rem 0.5rem 0.5rem" }}>
           <LanguageSwitcher variant="pills" />
         </div>
 
