@@ -17,12 +17,14 @@ const LINKS = [
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
+  // Cerrar el drawer al navegar por hash
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
     return () => window.removeEventListener("hashchange", close);
   }, []);
 
+  // Scroll suave interno
   const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (e.currentTarget.getAttribute("href") || "").trim();
     if (!href.startsWith("#")) return;
@@ -36,12 +38,12 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA */}
-        <div className="flex items-center gap-2">
+        {/* IZQUIERDA (siempre): botón claro/oscuro */}
+        <div className="nav-left">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (desktop) */}
+        {/* CENTRO (solo desktop): links */}
         <nav className="nav-links" aria-label="Secciones">
           {LINKS.map((l) => (
             <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
@@ -51,8 +53,8 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* DERECHA */}
-        <div className="flex items-center gap-2">
+        {/* DERECHA: idioma + hamburguesa */}
+        <div className="nav-actions">
           <LanguageSwitcher variant="button" />
           <button
             className="hamburger"
@@ -67,17 +69,19 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil */}
-      <div className={`nav-drawer ${open ? "open" : ""}`}>
-        <div className="px-1 pb-2">
-          <LanguageSwitcher variant="pills" />
+      {/* Drawer móvil (cerrado por defecto; solo se monta si open=true) */}
+      {open && (
+        <div className="nav-drawer open">
+          <div className="px-1 pb-2">
+            <LanguageSwitcher variant="pills" />
+          </div>
+          {LINKS.map((l) => (
+            <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
+              {l.label}
+            </Link>
+          ))}
         </div>
-        {LINKS.map((l) => (
-          <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
-            {l.label}
-          </Link>
-        ))}
-      </div>
+      )}
     </header>
   );
 }
