@@ -1,7 +1,7 @@
 // src/components/Navbar.tsx
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -17,12 +17,37 @@ const LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const drawerRef = useRef<HTMLDivElement | null>(null);
 
+  // Cerrar al cambiar el hash (navegación interna)
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
     return () => window.removeEventListener("hashchange", close);
   }, []);
+
+  // Cerrar con Esc y click fuera
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    const onClickOutside = (e: MouseEvent) => {
+      if (!open) return;
+      const target = e.target as Node;
+      if (drawerRef.current && !drawerRef.current.contains(target)) {
+        // Evita cerrar si clickeamos el botón hamburguesa
+        const btn = document.getElementById("nav-hamburger");
+        if (btn && btn.contains(target)) return;
+        setOpen(false);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onClickOutside);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onClickOutside);
+    };
+  }, [open]);
 
   const onNav = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const href = (e.currentTarget.getAttribute("href") || "").trim();
@@ -37,7 +62,7 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: toggle */}
+        {/* IZQUIERDA: toggle (icono minimal) */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
@@ -56,9 +81,12 @@ export default function Navbar() {
         <div className="nav-actions">
           <LanguageSwitcher variant="button" />
           <button
+            id="nav-hamburger"
+            type="button"
             className="hamburger"
             aria-label="Abrir menú"
             aria-expanded={open}
+            aria-controls="nav-drawer"
             onClick={() => setOpen((v) => !v)}
           >
             <span />
@@ -69,7 +97,12 @@ export default function Navbar() {
       </div>
 
       {/* Drawer móvil */}
-      <div className={`nav-drawer ${open ? "open" : ""}`}>
+      <div
+        id="nav-drawer"
+        ref={drawerRef}
+        className={`nav-drawer ${open ? "open" : ""}`}
+        aria-hidden={!open}
+      >
         <div className="px-1 pb-2">
           <LanguageSwitcher variant="pills" />
         </div>

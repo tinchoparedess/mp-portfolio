@@ -7,7 +7,7 @@ export default function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const [isDark, setIsDark] = useState(false);
 
-  // Evitar hydration mismatch y leer preferencia
+  // Al montar: leer preferencia guardada o del sistema
   useEffect(() => {
     setMounted(true);
     try {
@@ -31,16 +31,19 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={toggle}
+      type="button"
       className="theme-icon-btn"
-      aria-label={isDark ? "Modo claro" : "Modo oscuro"}
+      aria-label={isDark ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}
       title={isDark ? "Modo claro" : "Modo oscuro"}
     >
-      {/* Solo mostramos el ícono cuando ya montó para evitar parpadeo */}
+      {/* Evitar parpadeo: solo mostramos icono tras montar */}
       {mounted ? (
         <span className="theme-icon" aria-hidden>
           {isDark ? "🌙" : "☀️"}
         </span>
-      ) : null}
+      ) : (
+        <span className="theme-icon" aria-hidden />
+      )}
     </button>
   );
 }

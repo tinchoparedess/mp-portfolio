@@ -105,7 +105,9 @@ export default function Page() {
         {/* QUIÉN SOY */}
         <section id="quien-soy" className="section text-center">
           <h2 className="section-title">{t("who_title") /* Quién soy */}</h2>
-          {/* (Eliminado el subtítulo/kicker a pedido) */}
+          {/* Línea dorada sutil bajo el título, reutilizando .kicker */}
+          <span className="kicker" aria-hidden> </span>
+
           <div className="mx-auto mt-6 max-w-2xl">
             <p className="lead">
               Martín. Inquieto por naturaleza, curioso por elección. Persigo lo esencial:
@@ -150,29 +152,32 @@ export default function Page() {
           <h2 className="section-title">{t("vision_title") /* Visión */}</h2>
           <p className="kicker">{t("vision_kicker") /* Brújula personal */}</p>
 
-          <ul className="vis-list mt-8">
-            <li>
-              <div className="vis-title">Horizontes nuevos</div>
-              <div className="vis-copy">
-                Viajar es mi manera de aprender: vivir en primera persona, observar con
-                atención, construir criterio propio.
-              </div>
-            </li>
-            <li>
-              <div className="vis-title">Elegancia funcional</div>
-              <div className="vis-copy">
-                La belleza está en lo esencial. Sin ruido, con intención clara y
-                resultados que trascienden.
-              </div>
-            </li>
-            <li>
-              <div className="vis-title">Escuchar antes de construir</div>
-              <div className="vis-copy">
-                El verdadero valor nace al escuchar. Detectar la necesidad real es el
-                inicio de todo lo que tiene sentido.
-              </div>
-            </li>
-          </ul>
+          {/* centrado y respiración más elegante */}
+          <div className="center-narrow">
+            <ul className="vis-list mt-8">
+              <li>
+                <div className="vis-title">Horizontes nuevos</div>
+                <div className="vis-copy">
+                  Viajar es mi manera de aprender: vivir en primera persona, observar con
+                  atención, construir criterio propio.
+                </div>
+              </li>
+              <li>
+                <div className="vis-title">Elegancia funcional</div>
+                <div className="vis-copy">
+                  La belleza está en lo esencial. Sin ruido, con intención clara y
+                  resultados que trascienden.
+                </div>
+              </li>
+              <li>
+                <div className="vis-title">Escuchar antes de construir</div>
+                <div className="vis-copy">
+                  El verdadero valor nace al escuchar. Detectar la necesidad real es el
+                  inicio de todo lo que tiene sentido.
+                </div>
+              </li>
+            </ul>
+          </div>
         </section>
 
         {/* IDEAS */}
