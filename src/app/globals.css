@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "keen-slider/keen-slider.min.css";
+
 
 /* ================== TOKENS ================== */
 :root{
@@ -342,4 +344,10 @@ html.dark .theme-icon-btn:hover{ background: rgba(255,255,255,.06); }
   display: inline-block;
   font-size: 1.2rem;
   transform: translateY(1px);
+}
+
+/* ================== EXPERIENCIAS: centrar última tarjeta si el total es impar ================== */
+.exp-grid > *:last-child:nth-child(odd) {
+  grid-column: 1 / -1; /* ocupa toda la fila */
+  justify-self: center; /* se centra horizontalmente */
 }
