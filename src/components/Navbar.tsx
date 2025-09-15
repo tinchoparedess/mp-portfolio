@@ -19,7 +19,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  // Cerrar al cambiar el hash (navegación interna)
+  // Cerrar al cambiar hash
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
@@ -28,14 +28,11 @@ export default function Navbar() {
 
   // Cerrar con Esc y click fuera
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     const onClickOutside = (e: MouseEvent) => {
       if (!open) return;
       const target = e.target as Node;
       if (drawerRef.current && !drawerRef.current.contains(target)) {
-        // Evita cerrar si clickeamos el botón hamburguesa
         const btn = document.getElementById("nav-hamburger");
         if (btn && btn.contains(target)) return;
         setOpen(false);
@@ -62,7 +59,7 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: toggle (icono minimal) */}
+        {/* IZQUIERDA: toggle */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
@@ -96,17 +93,15 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil */}
+      {/* Drawer móvil — SIN selector de idioma, con animación suave */}
       <div
         id="nav-drawer"
         ref={drawerRef}
-        className={`nav-drawer ${open ? "open" : ""}`}
+        className={`nav-drawer transform transition-all duration-300 ease-out ${
+          open ? "open opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
         aria-hidden={!open}
       >
-        <div className="px-1 pb-2">
-          <LanguageSwitcher variant="pills" />
-        </div>
-
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
             {l.label}

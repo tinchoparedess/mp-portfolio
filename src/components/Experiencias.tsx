@@ -56,10 +56,19 @@ const EXPERIENCIAS = [
 export default function Experiencias() {
   return (
     <section id="experiencias" className="section container-pro">
-      <h2 className="section-title underline text-center">Experiencias</h2>
+      {/* Título centrado, sin subrayado blanco; línea dorada minimal */}
+      <div className="text-center">
+        <h2 className="section-title">Experiencias</h2>
+        <span className="kicker" aria-hidden />
+      </div>
 
-      {/* Grid; la última queda centrada si el total es impar (ver regla .exp-grid en global.css) */}
-      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 exp-grid">
+      {/* grid 2 columnas; última centrada si queda impar */}
+      <div
+        className="
+          mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12
+          sm:[&>article:last-child]:col-span-2 sm:[&>article:last-child]:mx-auto
+        "
+      >
         {EXPERIENCIAS.map((exp, i) => (
           <ExpCard key={i} exp={exp} />
         ))}
@@ -69,16 +78,11 @@ export default function Experiencias() {
 }
 
 function ExpCard({ exp }: { exp: (typeof EXPERIENCIAS)[0] }) {
-  // Sin gesto de arrastre; solo flechas
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+  const [sliderRef] = useKeenSlider<HTMLDivElement>({
     loop: true,
     renderMode: "performance",
-    drag: false,
     slides: { perView: 1 },
   });
-
-  const prev = () => instanceRef.current?.prev();
-  const next = () => instanceRef.current?.next();
 
   return (
     <article className="panel max-w-md w-full p-5 lg:p-6">
@@ -92,74 +96,24 @@ function ExpCard({ exp }: { exp: (typeof EXPERIENCIAS)[0] }) {
       </header>
 
       {/* Carrusel */}
-      <div className="relative">
-        <div
-          ref={sliderRef}
-          className="keen-slider rounded-xl overflow-hidden border border-black/5 dark:border-white/10"
-        >
-          {exp.fotos.map((src, i) => (
-            <div key={i} className="keen-slider__slide">
-              <div className="relative w-full aspect-[4/3]">
-                <Image
-                  src={src}
-                  alt=""
-                  fill
-                  sizes="(max-width: 768px) 90vw, 500px"
-                  className="object-cover"
-                  priority={false}
-                />
-              </div>
+      <div
+        ref={sliderRef}
+        className="keen-slider rounded-xl overflow-hidden border border-black/5 dark:border-white/10"
+      >
+        {exp.fotos.map((src, i) => (
+          <div key={i} className="keen-slider__slide">
+            <div className="relative w-full aspect-[4/3]">
+              <Image
+                src={src}
+                alt=""
+                fill
+                sizes="(max-width: 768px) 90vw, 500px"
+                className="object-cover"
+              />
             </div>
-          ))}
-        </div>
-
-        {/* Flechas transparentes (minimal lujo) */}
-        <button
-          type="button"
-          onClick={prev}
-          aria-label="Anterior"
-          className="absolute left-2 top-1/2 -translate-y-1/2 grid place-items-center w-9 h-9 rounded-full
-                     bg-black/0 hover:bg-black/10 dark:hover:bg-white/10
-                     border border-transparent hover:border-[color-mix(in_oklab,var(--gold-2),transparent)]
-                     backdrop-blur-sm transition"
-        >
-          <ChevronLeft />
-        </button>
-
-        <button
-          type="button"
-          onClick={next}
-          aria-label="Siguiente"
-          className="absolute right-2 top-1/2 -translate-y-1/2 grid place-items-center w-9 h-9 rounded-full
-                     bg-black/0 hover:bg-black/10 dark:hover:bg-white/10
-                     border border-transparent hover:border-[color-mix(in_oklab,var(--gold-2),transparent)]
-                     backdrop-blur-sm transition"
-        >
-          <ChevronRight />
-        </button>
+          </div>
+        ))}
       </div>
     </article>
-  );
-}
-
-/* Íconos minimalistas (SVG) */
-function ChevronLeft(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" {...props}>
-      <path
-        fill="currentColor"
-        d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"
-      />
-    </svg>
-  );
-}
-function ChevronRight(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" {...props}>
-      <path
-        fill="currentColor"
-        d="M8.59 16.59 10 18l6-6-6-6-1.41 1.41L13.17 12z"
-      />
-    </svg>
   );
 }
