@@ -313,3 +313,22 @@ html.dark .note-card:hover{ box-shadow: 0 18px 42px -24px rgba(0,0,0,.65); }
     top: calc(var(--nav-h, 64px) + 8px);
   }
 }
+
+/* ================== THEME ICON (minimal) ================== */
+.theme-icon-btn{
+  -webkit-tap-highlight-color: transparent;
+  border: 0;
+  background: transparent;
+  padding: .45rem;
+  border-radius: 10px;
+  line-height: 1;
+  cursor: pointer;
+}
+.theme-icon-btn:hover{ background: rgba(17,24,39,.06); }
+html.dark .theme-icon-btn:hover{ background: rgba(255,255,255,.06); }
+
+.theme-icon{
+  display: inline-block;
+  font-size: 1.2rem;
+  transform: translateY(1px);
+}
