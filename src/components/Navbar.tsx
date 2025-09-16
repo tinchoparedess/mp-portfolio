@@ -9,7 +9,7 @@ import LanguageSwitcher from "@/components/LanguageSwitcher";
 const LINKS = [
   { href: "#quien-soy", label: "Quién soy" },
   { href: "#highlights", label: "Highlights" },
-  { href: "#escenas", label: "Escenas" },
+  { href: "#experiencias", label: "Experiencias" }, // ← reemplaza Escenas
   { href: "#vision", label: "Visión" },
   { href: "#ideas", label: "Ideas" },
   { href: "#contacto", label: "Contacto" },
@@ -19,7 +19,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  // Cerrar al cambiar hash
+  // Cerrar al cambiar el hash (navegación interna)
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
@@ -28,7 +28,9 @@ export default function Navbar() {
 
   // Cerrar con Esc y click fuera
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
     const onClickOutside = (e: MouseEvent) => {
       if (!open) return;
       const target = e.target as Node;
@@ -93,13 +95,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil — SIN selector de idioma, con animación suave */}
+      {/* Drawer móvil (sin selector de idioma adentro) */}
       <div
         id="nav-drawer"
         ref={drawerRef}
-        className={`nav-drawer transform transition-all duration-300 ease-out ${
-          open ? "open opacity-100 translate-y-0" : "opacity-0 -translate-y-3 pointer-events-none"
-        }`}
+        className={`nav-drawer ${open ? "open" : ""}`}
         aria-hidden={!open}
       >
         {LINKS.map((l) => (
