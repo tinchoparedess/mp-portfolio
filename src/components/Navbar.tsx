@@ -5,11 +5,12 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import { AnimatePresence, motion } from "framer-motion";
 
 const LINKS = [
   { href: "#quien-soy", label: "Quién soy" },
   { href: "#highlights", label: "Highlights" },
-  { href: "#experiencias", label: "Experiencias" }, // ← reemplaza Escenas
+  { href: "#experiencias", label: "Experiencias" }, // nuevo
   { href: "#vision", label: "Visión" },
   { href: "#ideas", label: "Ideas" },
   { href: "#contacto", label: "Contacto" },
@@ -28,9 +29,7 @@ export default function Navbar() {
 
   // Cerrar con Esc y click fuera
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
-    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
     const onClickOutside = (e: MouseEvent) => {
       if (!open) return;
       const target = e.target as Node;
@@ -61,7 +60,7 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: toggle */}
+        {/* IZQUIERDA: theme */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
@@ -95,19 +94,35 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil (sin selector de idioma adentro) */}
-      <div
-        id="nav-drawer"
-        ref={drawerRef}
-        className={`nav-drawer ${open ? "open" : ""}`}
-        aria-hidden={!open}
-      >
-        {LINKS.map((l) => (
-          <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
-            {l.label}
-          </Link>
-        ))}
-      </div>
+      {/* Drawer móvil (animado) */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            id="nav-drawer"
+            ref={drawerRef}
+            className="nav-drawer open"
+            aria-hidden={!open}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18, ease: "easeOut" }}
+          >
+            {/* (Quitamos LanguageSwitcher del drawer) */}
+            <div className="py-1">
+              {LINKS.map((l) => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="drawer-link"
+                  onClick={onNav}
+                >
+                  {l.label}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }

@@ -10,7 +10,9 @@ export default function GuestbookSection() {
   const [message, setMessage] = useState("");
 
   // si ?admin=1 en la URL, mostramos acciones de admin (borrar)
-  const isAdmin = typeof window !== "undefined" && new URLSearchParams(location.search).get("admin") === "1";
+  const isAdmin =
+    typeof window !== "undefined" &&
+    new URLSearchParams(location.search).get("admin") === "1";
 
   async function load() {
     try {
@@ -23,7 +25,9 @@ export default function GuestbookSection() {
     }
   }
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    load();
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -49,7 +53,7 @@ export default function GuestbookSection() {
     if (!token) return;
     const res = await fetch("/api/guestbook", {
       method: "DELETE",
-      headers: { "Authorization": `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` },
       body: JSON.stringify({ id }),
     });
     if (res.ok) load();
@@ -58,8 +62,11 @@ export default function GuestbookSection() {
 
   return (
     <section id="voces" className="section text-center">
-      <h2 className="section-title">Voces cercanas</h2>
-      <p className="kicker">Mensajes de personas con las que trabajé o compartí camino.</p>
+      {/* === CAMBIO: subrayado dorado === */}
+      <h2 className="section-title underline">Voces cercanas</h2>
+      <p className="kicker">
+        Mensajes de personas con las que trabajé o compartí camino.
+      </p>
 
       {/* Formulario */}
       <form onSubmit={onSubmit} className="mx-auto mt-6 max-w-xl panel text-left">
@@ -78,7 +85,9 @@ export default function GuestbookSection() {
           />
         </div>
         <div className="mt-4 text-right">
-          <button type="submit" className="btn btn-ghost btn-gold">Publicar</button>
+          <button type="submit" className="btn btn-ghost btn-gold">
+            Publicar
+          </button>
         </div>
       </form>
 

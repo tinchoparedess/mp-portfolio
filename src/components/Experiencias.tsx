@@ -1,10 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
-import { useCallback } from "react";
 
+/* ===================== DATA ===================== */
 const EXPERIENCIAS = [
   {
     lugar: "Cortina d’Ampezzo",
@@ -54,22 +55,48 @@ const EXPERIENCIAS = [
   },
 ];
 
+/* ===================== AUTOPLAY SÓLIDO ===================== */
+function AutoPlay(slider: any, interval = 3500) {
+  let timer: any;
+  let mouseOver = false;
+
+  const clear = () => timer && clearTimeout(timer);
+  const next = () => !mouseOver && slider.next();
+  const start = () => {
+    clear();
+    timer = setTimeout(next, interval);
+  };
+
+  slider.on("created", () => {
+    slider.container.addEventListener("mouseenter", () => {
+      mouseOver = true;
+      clear();
+    });
+    slider.container.addEventListener("mouseleave", () => {
+      mouseOver = false;
+      start();
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) clear();
+      else start();
+    });
+    start();
+  });
+
+  slider.on("dragStarted", clear);
+  slider.on("animationEnded", start);
+  slider.on("updated", start);
+}
+
+/* ===================== UI ===================== */
 export default function Experiencias() {
   return (
     <section id="experiencias" className="section container-pro">
-      {/* Título centrado con línea dorada minimal */}
       <div className="text-center">
-        <h2 className="section-title">Experiencias</h2>
-        <span className="kicker" aria-hidden />
+        <h2 className="section-title underline">Experiencias</h2>
       </div>
 
-      {/* grid 2 columnas; última centrada si queda impar */}
-      <div
-        className="
-          mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12
-          sm:[&>article:last-child]:col-span-2 sm:[&>article:last-child]:mx-auto
-        "
-      >
+      <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 exp-grid">
         {EXPERIENCIAS.map((exp, i) => (
           <ExpCard key={i} exp={exp} />
         ))}
@@ -79,18 +106,25 @@ export default function Experiencias() {
 }
 
 function ExpCard({ exp }: { exp: (typeof EXPERIENCIAS)[0] }) {
-  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
-    loop: true,
-    renderMode: "performance",
-    slides: { perView: 1 },
-  });
+  const [current, setCurrent] = useState(0);
 
-  const prev = useCallback(() => instanceRef.current?.prev(), [instanceRef]);
-  const next = useCallback(() => instanceRef.current?.next(), [instanceRef]);
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      loop: true,
+      renderMode: "precision",
+      slides: { perView: 1 },
+      slideChanged(s) {
+        setCurrent(s.track.details.rel);
+      },
+      created(s) {
+        setCurrent(s.track.details.rel);
+      },
+    },
+    [(s) => AutoPlay(s, 3500)]
+  );
 
   return (
-    <article className="panel max-w-md w-full p-5 lg:p-6">
-      {/* Texto */}
+    <article className="panel max-w-md w-full p-5 lg:p-6 mx-auto">
       <header className="mb-4 text-center">
         <h3 className="text-lg font-semibold tracking-tight">
           <span className="mr-2">{exp.bandera}</span>
@@ -99,8 +133,8 @@ function ExpCard({ exp }: { exp: (typeof EXPERIENCIAS)[0] }) {
         <p className="text-sm text-muted-foreground mt-1">{exp.desc}</p>
       </header>
 
-      {/* Carrusel con flechas */}
-      <div className="relative group">
+      <div className="relative">
+        {/* Slider */}
         <div
           ref={sliderRef}
           className="keen-slider rounded-xl overflow-hidden border border-black/5 dark:border-white/10"
@@ -121,50 +155,50 @@ function ExpCard({ exp }: { exp: (typeof EXPERIENCIAS)[0] }) {
           ))}
         </div>
 
-        {/* Flecha izquierda */}
+        {/* Arrows */}
         <button
-          type="button"
-          onClick={prev}
           aria-label="Anterior"
-          className="
-            absolute left-2 top-1/2 -translate-y-1/2 z-10
-            inline-flex items-center justify-center
-            w-9 h-9 rounded-full
-            bg-black/35 text-white shadow
-            backdrop-blur-sm
-            border border-white/15
-            hover:bg-black/45 hover:shadow-lg
-            transition
-            opacity-100 sm:opacity-0 sm:group-hover:opacity-100
-          "
+          onClick={() => instanceRef.current?.prev()}
+          className="absolute left-2 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-9 h-9 rounded-full border border-white/15 bg-white/8 dark:bg-white/5 backdrop-blur hover:bg-white/15"
         >
-          {/* ícono */}
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M15 6l-6 6 6 6" />
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M15.5 5.5 9 12l6.5 6.5-1.4 1.4L6.2 12l7.9-7.9 1.4 1.4Z"
+            />
+          </svg>
+        </button>
+        <button
+          aria-label="Siguiente"
+          onClick={() => instanceRef.current?.next()}
+          className="absolute right-2 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-9 h-9 rounded-full border border-white/15 bg-white/8 dark:bg-white/5 backdrop-blur hover:bg-white/15"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="m8.5 5.5 1.4-1.4L17.8 12l-7.9 7.9-1.4-1.4L14 12 8.5 6.5Z"
+            />
           </svg>
         </button>
 
-        {/* Flecha derecha */}
-        <button
-          type="button"
-          onClick={next}
-          aria-label="Siguiente"
-          className="
-            absolute right-2 top-1/2 -translate-y-1/2 z-10
-            inline-flex items-center justify-center
-            w-9 h-9 rounded-full
-            bg-black/35 text-white shadow
-            backdrop-blur-sm
-            border border-white/15
-            hover:bg-black/45 hover:shadow-lg
-            transition
-            opacity-100 sm:opacity-0 sm:group-hover:opacity-100
-          "
-        >
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M9 6l6 6-6 6" />
-          </svg>
-        </button>
+        {/* Dots */}
+        <div className="mt-3 flex items-center justify-center gap-2">
+          {exp.fotos.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => instanceRef.current?.moveToIdx(i)}
+              aria-label={`Ir a foto ${i + 1}`}
+              className="h-2 rounded-full transition-all"
+              style={{
+                width: i === current ? 18 : 6,
+                background:
+                  i === current
+                    ? "linear-gradient(90deg, var(--gold-2), var(--gold-1))"
+                    : "rgba(255,255,255,.25)",
+              }}
+            />
+          ))}
+        </div>
       </div>
     </article>
   );
