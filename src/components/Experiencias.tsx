@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
+import Reveal from "@/components/Reveal";
 
 /* ===================== DATA ===================== */
 const EXPERIENCIAS = [
@@ -93,7 +94,11 @@ export default function Experiencias() {
   return (
     <section id="experiencias" className="section container-pro">
       <div className="text-center">
-        <h2 className="section-title underline">Experiencias</h2>
+        {/* Animamos SOLO el bloque del título para mantener consistencia con el resto */}
+        <Reveal as="div">
+          <h2 className="section-title underline">Experiencias</h2>
+          <span className="kicker" aria-hidden />
+        </Reveal>
       </div>
 
       <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-12 exp-grid">

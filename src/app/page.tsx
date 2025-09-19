@@ -5,12 +5,13 @@ import { useI18n } from "@/i18n/I18nProvider";
 import GuestbookSection from "@/components/GuestbookSection";
 import Experiencias from "@/components/Experiencias";
 import ValueList from "@/components/ValueList";
+import Reveal from "@/components/Reveal";
 import { useMemo } from "react";
 
 export default function Page() {
   const { t, lang } = useI18n(); // "es" | "en" | "pt" | "it"
 
-  // WhatsApp message por idioma
+  // --- WhatsApp message por idioma ---
   const waText = useMemo(() => {
     const byLang: Record<string, string> = {
       es: "Gracias por ponerte en contacto conmigo. Cuéntame en qué puedo ayudarte.",
@@ -24,7 +25,7 @@ export default function Page() {
   const WHATSAPP_NUMBER = "393481794230";
   const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
-  // Highlights
+  // --- Highlights ---
   const highlights = [
     { title: "Adaptabilidad", copy: "Me integro a ritmos y contextos distintos sin perder calidad." },
     { title: "Comunicación / Idiomas", copy: "Aprender y expresarme en otros idiomas, escuchando primero para conectar mejor." },
@@ -32,14 +33,14 @@ export default function Page() {
     { title: "Precisión / Ritmo", copy: "Organizar el tiempo, afinar el resultado." },
   ];
 
-  // Visión
+  // --- Visión ---
   const vision = [
     { title: "Horizontes nuevos", copy: "Viajar es mi manera de aprender: vivir en primera persona, observar con atención, construir criterio propio." },
     { title: "Elegancia funcional", copy: "La belleza está en lo esencial. Sin ruido, con intención clara y resultados que trascienden." },
     { title: "Escuchar antes de construir", copy: "El verdadero valor nace al escuchar. Detectar la necesidad real es el inicio de todo lo que tiene sentido." },
   ];
 
-  // Ideas
+  // --- Ideas ---
   const ideas = [
     { title: "Crear sin ruido", copy: "Las obras verdaderas nacen de la claridad: espacios, proyectos y experiencias que permiten que lo esencial resuene." },
     { title: "Comodidad elevada", copy: "El lujo no está en el exceso, sino en hacer que cada detalle sirva a la grandeza de un propósito." },
@@ -74,30 +75,39 @@ export default function Page() {
 
         {/* QUIÉN SOY */}
         <section id="quien-soy" className="section text-center">
-          <h2 className="section-title underline">{t("who_title")}</h2>
+          <Reveal as="h2" className="section-title underline">
+            {t("who_title")}
+          </Reveal>
+          <span className="kicker" aria-hidden />
           <div className="mx-auto mt-6 max-w-2xl">
             <p className="lead">
-              Martín. Inquieto por naturaleza, curioso por elección. Persigo lo
-              esencial: la elegancia que sirve, el detalle que habla. Creo en el
-              arte de hacer las cosas bien, con calidez y conciencia.
+              Martín. Inquieto por naturaleza, curioso por elección. Persigo lo esencial:
+              la elegancia que sirve, el detalle que habla. Creo en el arte de hacer las
+              cosas bien, con calidez y conciencia.
             </p>
           </div>
         </section>
 
-        {/* HIGHLIGHTS (2 columnas) */}
+        {/* HIGHLIGHTS */}
         <section id="highlights" className="section text-center">
-          <h2 className="section-title underline">{t("high_title")}</h2>
+          <Reveal as="h2" className="section-title underline">
+            {t("high_title")}
+          </Reveal>
+          <p className="kicker">{t("high_kicker")}</p>
           <div className="center-narrow">
             <ValueList items={highlights} cols={2} />
           </div>
         </section>
 
-        {/* EXPERIENCIAS */}
+        {/* EXPERIENCIAS (el h2 vive dentro del componente, no lo dupliques aquí) */}
         <Experiencias />
 
         {/* VISIÓN */}
         <section id="vision" className="section text-center">
-          <h2 className="section-title underline">{t("vision_title")}</h2>
+          <Reveal as="h2" className="section-title underline">
+            {t("vision_title")}
+          </Reveal>
+          <span className="kicker" aria-hidden />
           <div className="center-narrow">
             <ValueList items={vision} cols={1} />
           </div>
@@ -105,18 +115,27 @@ export default function Page() {
 
         {/* IDEAS */}
         <section id="ideas" className="section text-center">
-          <h2 className="section-title underline">{t("ideas_title")}</h2>
+          <Reveal as="h2" className="section-title underline">
+            {t("ideas_title")}
+          </Reveal>
+          <p className="kicker">{t("ideas_kicker")}</p>
           <div className="center-narrow">
             <ValueList items={ideas} cols={1} />
           </div>
         </section>
 
         {/* VOCES CERCANAS */}
-        <GuestbookSection />
+        {/* VOCES CERCANAS */}
+<GuestbookSection />
+
 
         {/* CONTACTO */}
         <section id="contacto" className="section text-center">
-          <h2 className="section-title underline">{t("contact_title")}</h2>
+          <Reveal as="h2" className="section-title underline">
+            {t("contact_title")}
+          </Reveal>
+          <p className="kicker">{t("contact_kicker")}</p>
+
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {/* WhatsApp */}
             <a href={waHref} target="_blank" rel="noreferrer noopener" className="btn btn-wa">
@@ -130,10 +149,7 @@ export default function Page() {
             </a>
 
             {/* Email */}
-            <a
-              href="mailto:tinchoparedess@gmail.com?subject=Contacto%20desde%20tu%20web"
-              className="btn btn-ghost btn-gold"
-            >
+            <a href="mailto:tinchoparedess@gmail.com?subject=Contacto%20desde%20tu%20web" className="btn btn-ghost btn-gold">
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path
                   fill="currentColor"

@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Reveal from "@/components/Reveal";
 
 type Entry = { id: string; name: string; message: string; createdAt: number };
 
@@ -9,7 +10,6 @@ export default function GuestbookSection() {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
-  // si ?admin=1 en la URL, mostramos acciones de admin (borrar)
   const isAdmin =
     typeof window !== "undefined" &&
     new URLSearchParams(location.search).get("admin") === "1";
@@ -62,11 +62,13 @@ export default function GuestbookSection() {
 
   return (
     <section id="voces" className="section text-center">
-      {/* === CAMBIO: subrayado dorado === */}
-      <h2 className="section-title underline">Voces cercanas</h2>
-      <p className="kicker">
-        Mensajes de personas con las que trabajé o compartí camino.
-      </p>
+      {/* Header con Reveal para que título + kicker animen juntos */}
+      <Reveal as="header" className="text-center">
+        <h2 className="section-title underline">Voces cercanas</h2>
+        <p className="kicker">
+          Mensajes de personas con las que trabajé o compartí camino.
+        </p>
+      </Reveal>
 
       {/* Formulario */}
       <form onSubmit={onSubmit} className="mx-auto mt-6 max-w-xl panel text-left">

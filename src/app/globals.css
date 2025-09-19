@@ -1,6 +1,18 @@
 @import "tailwindcss";
 @import "keen-slider/keen-slider.min.css";
 
+:root{
+  --font-playfair: "Playfair Display";
+  --font-inter: "Inter";
+}
+
+/* Fuente base del sitio (cuerpo) */
+body { font-family: var(--font-inter), system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+
+/* Ya lo usás, pero reforzamos que los títulos tomen Playfair desde la variable */
+.hero-title, .section-title { font-family: var(--font-playfair), ui-serif, Georgia, "Times New Roman", serif; }
+
+
 /* ================== TOKENS ================== */
 :root{
   /* Claro */
@@ -59,26 +71,39 @@ html.dark body::before{
   line-height: 1.08;
 }
 
+/* ——— Títulos de sección (única definición) ——— */
 .section-title{
   font-size: clamp(26px, 4vw, 32px);
   text-align: center;
-  margin: 0 0 2rem 0;       /* centrado + respiración */
-  text-decoration: none;    /* 🔒 evita subrayado blanco del navegador */
+  margin: 0 0 2rem 0;
+  text-decoration: none; /* evita subrayado blanco del navegador */
 }
 
-/* subrayado dorado opcional para títulos sin kicker */
 .section-title.underline{
   position: relative;
   display: inline-block;
   padding-bottom: .45rem;
   margin-bottom: 1.6rem;
 }
+
 .section-title.underline::after{
-  content:""; position:absolute; left:50%; transform:translateX(-50%);
-  bottom:-2px; width:120px; height:3px; border-radius:999px;
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:-2px;
+  width:120px;
+  height:3px;
+  border-radius:999px;
   background: linear-gradient(90deg, var(--gold-2), var(--gold-1));
+
+  /* ✨ animación con Reveal */
+  transform: translateX(-50%) scaleX(var(--u, 1));
+  transform-origin: center;
+  transition: transform .6s ease .05s;
 }
 
+
+/* kicker: solo texto (sin rayita) bajo el título */
 .kicker{
   margin-top: .55rem;
   margin-bottom: 1.4rem;
@@ -87,12 +112,8 @@ html.dark body::before{
   display:inline-block;
 }
 html.dark .kicker{ color: var(--muted-d) !important; }
-.kicker::after{
-  content:""; display:block; margin:.55rem auto 0; width:90px; height:3px; border-radius:999px;
-  background: linear-gradient(90deg, var(--gold-2), var(--gold-1));
-}
 
-/* Si usamos la rayita sin texto (aria-hidden), que no deje huecos */
+/* Si usamos kicker vacío/aria-hidden, que no deje huecos */
 .kicker:empty,
 .kicker[aria-hidden]{ height:0; line-height:0; color:transparent; }
 
@@ -435,30 +456,14 @@ section[id] { scroll-margin-top: calc(var(--nav-h) + 16px); }
 /* Afinado color de texto para copys secundarios */
 .text-muted-foreground{ color: var(--muted); }
 html.dark .text-muted-foreground{ color: var(--muted-d); }
-/* ===== Headings elegantes en todas las secciones ===== */
-.section-title{
-  text-align: center;
-  margin: 0;
-}
 
-/* El subtítulo (kicker) debe ir DEBAJO del título */
+/* El subtítulo (kicker) va DEBAJO del título siempre */
 .section .section-title + .kicker{
-  display: block;           /* <— clave para que baje de renglón */
+  display: block;
   text-align: center;
   margin-top: .55rem;
   margin-bottom: 1.4rem;
 }
-
 @media (min-width: 1024px){
-  .section .section-title + .kicker{
-    margin-bottom: 2rem;
-  }
-}
-
-/* Si usamos la rayita sin texto (aria-hidden), que no deje huecos */
-.kicker:empty,
-.kicker[aria-hidden]{
-  height: 0;
-  line-height: 0;
-  color: transparent;
+  .section .section-title + .kicker{ margin-bottom: 2rem; }
 }

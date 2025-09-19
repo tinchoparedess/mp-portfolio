@@ -13,10 +13,11 @@ type Props = {
 };
 
 const variants: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, y: 24, ["--u" as any]: 0 },   // <-- CSS var para el subrayado
   show: (customDelay = 0) => ({
     opacity: 1,
     y: 0,
+    ["--u" as any]: 1,                                 // <-- pasa de 0 a 1
     transition: {
       duration: 0.6,
       ease: [0.22, 1, 0.36, 1],
