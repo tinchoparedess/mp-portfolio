@@ -467,3 +467,23 @@ html.dark .text-muted-foreground{ color: var(--muted-d); }
 @media (min-width: 1024px){
   .section .section-title + .kicker{ margin-bottom: 2rem; }
 }
+/* ====== ValueList responsive columnas ====== */
+/* Mobile: SIEMPRE 1 columna */
+.vis-list{
+  grid-template-columns: 1fr !important;
+}
+
+/* Desde 640px (sm) usamos la cantidad pedida por el componente */
+@media (min-width: 640px){
+  .vis-list{
+    grid-template-columns: var(--cols, 1fr) !important;
+  }
+}
+
+/* Legibilidad (puede que ya lo tengas, lo dejo acá por claridad) */
+.vis-copy{
+  font-size: 1rem;
+  line-height: 1.6;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}

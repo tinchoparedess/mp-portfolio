@@ -21,17 +21,17 @@ export default function ValueList({
   return (
     <ul
       className="vis-list"
-      style={{
-        gridTemplateColumns: cols === 2 ? "repeat(2, minmax(0, 1fr))" : "repeat(1, minmax(0, 1fr))",
-      }}
+      style={
+        {
+          // 👉 seteamos la cantidad de columnas en una CSS variable
+          // para poder forzar 1 col en mobile desde el CSS global
+          ["--cols" as any]:
+            cols === 2 ? "repeat(2, minmax(0, 1fr))" : "repeat(1, minmax(0, 1fr))",
+        } as React.CSSProperties
+      }
     >
       {items.map((item, i) => (
-        <Reveal
-          // cada item entra con un leve offset en el tiempo (stagger)
-          key={item.title + i}
-          as="li"
-          delay={delayStart + i * stagger}
-        >
+        <Reveal key={item.title + i} as="li" delay={delayStart + i * stagger}>
           <div className="vis-title">{item.title}</div>
           <div className="vis-copy">{item.copy}</div>
         </Reveal>
