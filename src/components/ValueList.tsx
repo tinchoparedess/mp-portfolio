@@ -1,6 +1,8 @@
+// src/components/ValueList.tsx
 "use client";
 
 import Reveal from "@/components/Reveal";
+import { cleanDashes } from "@/lib/text";
 
 type Item = { title: string; copy: string };
 
@@ -35,8 +37,8 @@ export default function ValueList({
           as="li"
           delay={delayStart + i * stagger}
         >
-          <div className="vis-title">{item.title}</div>
-          <div className="vis-copy">{item.copy}</div>
+          <div className="vis-title">{cleanDashes(item.title)}</div>
+          <div className="vis-copy">{cleanDashes(item.copy)}</div>
         </Reveal>
       ))}
     </ul>

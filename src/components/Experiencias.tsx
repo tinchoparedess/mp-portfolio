@@ -5,6 +5,7 @@ import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import Image from "next/image";
 import { useI18n } from "@/i18n/I18nProvider";
+import { cleanDashes } from "@/lib/text";
 
 /* ===================== DESCRIPCIONES POR IDIOMA ===================== */
 const descByLang: Record<string, Record<string, string>> = {
@@ -120,7 +121,7 @@ function ExpCard({ titulo, desc, bandera, fotos }: { titulo:string; desc:string;
           <span className="mr-2">{bandera}</span>
           {titulo}
         </h3>
-        <p className="text-sm text-muted-foreground mt-1">{desc}</p>
+        <p className="text-sm text-muted-foreground mt-1">{cleanDashes(desc)}</p>
       </header>
 
       <div className="relative">
