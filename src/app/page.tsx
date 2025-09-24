@@ -11,7 +11,7 @@ import { useMemo } from "react";
 export default function Page() {
   const { t, lang } = useI18n(); // "es" | "en" | "pt" | "it"
 
-  // --- WhatsApp message por idioma ---
+  // WhatsApp message por idioma
   const waText = useMemo(() => {
     const byLang: Record<string, string> = {
       es: "Gracias por ponerte en contacto conmigo. Cuéntame en qué puedo ayudarte.",
@@ -25,36 +25,105 @@ export default function Page() {
   const WHATSAPP_NUMBER = "393481794230";
   const waHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
 
-  // --- Highlights ---
-  const highlights = [
-    { title: "Adaptabilidad", copy: "Me integro a ritmos y contextos distintos sin perder calidad." },
-    { title: "Comunicación / Idiomas", copy: "Aprender y expresarme en otros idiomas, escuchando primero para conectar mejor." },
-    { title: "Servicio cálido", copy: "Atención humana y elegante, con detalles que hacen la diferencia." },
-    { title: "Precisión / Ritmo", copy: "Organizar el tiempo, afinar el resultado." },
-  ];
+  // === Textos largos por idioma (about + listas) ===
+  const contentByLang = {
+    es: {
+      about:
+        "Martín. Inquieto por naturaleza, curioso por elección. Persigo lo esencial: la elegancia que sirve, el detalle que habla. Creo en el arte de hacer las cosas bien, con calidez y conciencia.",
+      highlights: [
+        { title: "Adaptabilidad", copy: "Me integro a ritmos y contextos distintos sin perder calidad." },
+        { title: "Comunicación / Idiomas", copy: "Aprender y expresarme en otros idiomas, escuchando primero para conectar mejor." },
+        { title: "Servicio cálido", copy: "Atención humana y elegante, con detalles que hacen la diferencia." },
+        { title: "Precisión / Ritmo", copy: "Organizar el tiempo, afinar el resultado." },
+      ],
+      vision: [
+        { title: "Horizontes nuevos", copy: "Viajar es mi manera de aprender: vivir en primera persona, observar con atención, construir criterio propio." },
+        { title: "Elegancia funcional", copy: "La belleza está en lo esencial. Sin ruido, con intención clara y resultados que trascienden." },
+        { title: "Escuchar antes de construir", copy: "El verdadero valor nace al escuchar. Detectar la necesidad real es el inicio de todo lo que tiene sentido." },
+      ],
+      ideas: [
+        { title: "Crear sin ruido", copy: "Las obras verdaderas nacen de la claridad: espacios, proyectos y experiencias que permiten que lo esencial resuene." },
+        { title: "Comodidad elevada", copy: "El lujo no está en el exceso, sino en hacer que cada detalle sirva a la grandeza de un propósito." },
+        { title: "Elegancia como camino", copy: "Sobriedad con carácter: estilo que no distrae, acompaña y sostiene lo importante." },
+        { title: "Inspiración que trasciende", copy: "Crear con horizonte alto: obras que dialogan con lo eterno y atraviesan épocas." },
+        { title: "Prosperidad consciente", copy: "Expandir valor con intención: ideas, energía y riqueza que elevan a quienes caminan cerca." },
+      ],
+    },
+    en: {
+      about:
+        "Martín. Restless by nature, curious by choice. I pursue the essential: elegance that serves, details that speak. I believe in doing things well—with warmth and conscience.",
+      highlights: [
+        { title: "Adaptability", copy: "I adjust to different rhythms and contexts without losing quality." },
+        { title: "Communication / Languages", copy: "Learning and expressing in other languages, listening first to connect better." },
+        { title: "Warm service", copy: "Human, elegant attention—details that make the difference." },
+        { title: "Precision / Pace", copy: "Time organization, tuned outcomes." },
+      ],
+      vision: [
+        { title: "New horizons", copy: "Travel is how I learn: first-hand living, attentive observation, building my own criteria." },
+        { title: "Functional elegance", copy: "Beauty lies in the essential. No noise, clear intent, results that last." },
+        { title: "Listen before building", copy: "True value begins with listening. Seeing the real need is the start of anything meaningful." },
+      ],
+      ideas: [
+        { title: "Create without noise", copy: "True works are born from clarity: spaces, projects and experiences where the essential resonates." },
+        { title: "Elevated comfort", copy: "Luxury isn’t excess—every detail serves a greater purpose." },
+        { title: "Elegance as a path", copy: "Sober character: style that doesn’t distract; it supports what matters." },
+        { title: "Inspiration that endures", copy: "Build with a long horizon: works that converse with the timeless." },
+        { title: "Conscious prosperity", copy: "Expand value with intention—ideas, energy and wealth that uplift those around." },
+      ],
+    },
+    pt: {
+      about:
+        "Martín. Inquieto por natureza, curioso por escolha. Persigo o essencial: a elegância que serve, o detalhe que fala. Acredito em fazer bem feito, com calor e consciência.",
+      highlights: [
+        { title: "Adaptabilidade", copy: "Entro em diferentes ritmos e contextos sem perder qualidade." },
+        { title: "Comunicação / Idiomas", copy: "Aprender e me expressar em outros idiomas, ouvindo primeiro para conectar melhor." },
+        { title: "Atendimento caloroso", copy: "Atenção humana e elegante, com detalhes que fazem a diferença." },
+        { title: "Precisão / Ritmo", copy: "Organizar o tempo, afinar o resultado." },
+      ],
+      vision: [
+        { title: "Novos horizontes", copy: "Viajar é meu modo de aprender: viver em primeira pessoa, observar com atenção, construir critério próprio." },
+        { title: "Elegância funcional", copy: "A beleza está no essencial. Sem ruído, com intenção clara e resultados que permanecem." },
+        { title: "Ouvir antes de construir", copy: "O verdadeiro valor nasce ao ouvir. Ver a necessidade real é o começo do que faz sentido." },
+      ],
+      ideas: [
+        { title: "Criar sem ruído", copy: "As obras verdadeiras nascem da clareza: espaços, projetos e experiências onde o essencial ressoa." },
+        { title: "Conforto elevado", copy: "O luxo não é excesso—cada detalhe serve a um propósito maior." },
+        { title: "Elegância como caminho", copy: "Sobriedade com caráter: estilo que não distrai; sustenta o importante." },
+        { title: "Inspiração que atravessa", copy: "Criar com horizonte longo: obras que dialogam com o intemporal." },
+        { title: "Prosperidade consciente", copy: "Expandir valor com intenção—ideias, energia e riqueza que elevam quem está por perto." },
+      ],
+    },
+    it: {
+      about:
+        "Martín. Irrequieto per natura, curioso per scelta. Cerco l’essenziale: l’eleganza che serve, il dettaglio che parla. Credo nel fare bene, con calore e coscienza.",
+      highlights: [
+        { title: "Adattabilità", copy: "Mi integro in ritmi e contesti diversi senza perdere qualità." },
+        { title: "Comunicazione / Lingue", copy: "Imparare ed esprimermi in altre lingue, ascoltando prima per connettere meglio." },
+        { title: "Servizio caldo", copy: "Attenzione umana ed elegante—i dettagli fanno la differenza." },
+        { title: "Precisione / Ritmo", copy: "Organizzare il tempo, affinare il risultato." },
+      ],
+      vision: [
+        { title: "Nuovi orizzonti", copy: "Viaggiare è il mio modo di imparare: vivere in prima persona, osservare con attenzione, costruire criterio proprio." },
+        { title: "Eleganza funzionale", copy: "La bellezza sta nell’essenziale. Niente rumore, intento chiaro, risultati che restano." },
+        { title: "Ascoltare prima di costruire", copy: "Il vero valore nasce dall’ascolto. Vedere il bisogno reale è l’inizio di ciò che ha senso." },
+      ],
+      ideas: [
+        { title: "Creare senza rumore", copy: "Le opere vere nascono dalla chiarezza: spazi, progetti ed esperienze dove l’essenziale risuona." },
+        { title: "Comfort elevato", copy: "Il lusso non è eccesso—ogni dettaglio serve a uno scopo più grande." },
+        { title: "Eleganza come via", copy: "Sobrietà con carattere: stile che non distrae; sostiene l’importante." },
+        { title: "Ispirazione che resta", copy: "Creare con orizzonte lungo: opere che dialogano con il senza tempo." },
+        { title: "Prosperità consapevole", copy: "Espandere valore con intenzione—idee, energia e ricchezza che elevano chi ti sta vicino." },
+      ],
+    },
+  } as const;
 
-  // --- Visión ---
-  const vision = [
-    { title: "Horizontes nuevos", copy: "Viajar es mi manera de aprender: vivir en primera persona, observar con atención, construir criterio propio." },
-    { title: "Elegancia funcional", copy: "La belleza está en lo esencial. Sin ruido, con intención clara y resultados que trascienden." },
-    { title: "Escuchar antes de construir", copy: "El verdadero valor nace al escuchar. Detectar la necesidad real es el inicio de todo lo que tiene sentido." },
-  ];
-
-  // --- Ideas ---
-  const ideas = [
-    { title: "Crear sin ruido", copy: "Las obras verdaderas nacen de la claridad: espacios, proyectos y experiencias que permiten que lo esencial resuene." },
-    { title: "Comodidad elevada", copy: "El lujo no está en el exceso, sino en hacer que cada detalle sirva a la grandeza de un propósito." },
-    { title: "Elegancia como camino", copy: "Sobriedad con carácter: estilo que no distrae, acompaña y sostiene lo importante." },
-    { title: "Inspiración que trasciende", copy: "Crear con horizonte alto: obras que dialogan con lo eterno y atraviesan épocas." },
-    { title: "Prosperidad consciente", copy: "Expandir valor con intención: ideas, energía y riqueza que elevan a quienes caminan cerca." },
-  ];
+  const { about, highlights, vision, ideas } =
+    contentByLang[lang] ?? contentByLang.es;
 
   return (
     <>
-      {/* NAV */}
       <Navbar />
 
-      {/* MAIN */}
       <main className="container-pro">
         {/* HERO */}
         <section id="hero" className="section text-center">
@@ -80,11 +149,7 @@ export default function Page() {
           </Reveal>
           <span className="kicker" aria-hidden />
           <div className="mx-auto mt-6 max-w-2xl">
-            <p className="lead">
-              Martín. Inquieto por naturaleza, curioso por elección. Persigo lo esencial:
-              la elegancia que sirve, el detalle que habla. Creo en el arte de hacer las
-              cosas bien, con calidez y conciencia.
-            </p>
+            <p className="lead">{about}</p>
           </div>
         </section>
 
@@ -99,7 +164,7 @@ export default function Page() {
           </div>
         </section>
 
-        {/* EXPERIENCIAS (el h2 vive dentro del componente, no lo dupliques aquí) */}
+        {/* EXPERIENCIAS */}
         <Experiencias />
 
         {/* VISIÓN */}
@@ -124,10 +189,8 @@ export default function Page() {
           </div>
         </section>
 
-        {/* VOCES CERCANAS */}
-        {/* VOCES CERCANAS */}
-<GuestbookSection />
-
+        {/* VOCES CERCANAS — solo el componente (sin cabecera duplicada) */}
+        <GuestbookSection />
 
         {/* CONTACTO */}
         <section id="contacto" className="section text-center">
@@ -172,7 +235,6 @@ export default function Page() {
           </div>
         </section>
 
-        {/* FOOTER */}
         <footer className="footer">{t("footer")}</footer>
       </main>
     </>

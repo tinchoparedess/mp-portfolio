@@ -2,8 +2,11 @@
 
 import Reveal from "@/components/Reveal";
 
+type Item = { title: string; copy: string };
+
 type ValueListProps = {
-  items: { title: string; copy: string }[];
+  /** acepta arrays readonly o mutables */
+  items: ReadonlyArray<Item>;
   /** columnas en desktop: 1 o 2 (por defecto 1) */
   cols?: 1 | 2;
   /** retraso inicial para el primer ítem (s) */
@@ -21,17 +24,17 @@ export default function ValueList({
   return (
     <ul
       className="vis-list"
-      style={
-        {
-          // 👉 seteamos la cantidad de columnas en una CSS variable
-          // para poder forzar 1 col en mobile desde el CSS global
-          ["--cols" as any]:
-            cols === 2 ? "repeat(2, minmax(0, 1fr))" : "repeat(1, minmax(0, 1fr))",
-        } as React.CSSProperties
-      }
+      style={{
+        gridTemplateColumns:
+          cols === 2 ? "repeat(2, minmax(0, 1fr))" : "repeat(1, minmax(0, 1fr))",
+      }}
     >
       {items.map((item, i) => (
-        <Reveal key={item.title + i} as="li" delay={delayStart + i * stagger}>
+        <Reveal
+          key={item.title + i}
+          as="li"
+          delay={delayStart + i * stagger}
+        >
           <div className="vis-title">{item.title}</div>
           <div className="vis-copy">{item.copy}</div>
         </Reveal>

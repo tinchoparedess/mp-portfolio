@@ -1,5 +1,4 @@
 const pt = {
-  nav_home: "Início",
   nav_about: "Quem sou",
   nav_highlights: "Destaques",
   nav_experiencias: "Experiências",
@@ -7,6 +6,7 @@ const pt = {
   nav_ideas: "Ideias",
   nav_voices: "Vozes próximas",
   nav_contact: "Contato",
+  nav_languages: "Idioma",
 
   hero_name: "Martín Paredes",
   hero_quote: "Acredite em grande.",
@@ -19,10 +19,20 @@ const pt = {
   vision_title: "Visão",
   ideas_title: "Ideias",
   ideas_kicker: "Aforismos curtos",
+
   voices_title: "Vozes próximas",
+  voices_kicker: "Mensagens de pessoas com quem trabalhei ou caminhei junto.",
+  gb_name_ph: "Seu nome",
+  gb_msg_ph: "Sua mensagem",
+  gb_publish: "Publicar",
+  gb_loading: "Carregando…",
+  gb_empty: "Ainda não há mensagens. Escreve a primeira?",
+  gb_delete: "Excluir",
+  gb_delete_fail: "Não foi possível excluir (token incorreto?).",
+  gb_alert_fail: "Não foi possível salvar. Tente de novo.",
+
   contact_title: "Contato",
   contact_kicker: "Se isso ressoou, vamos conversar.",
-
   btn_whatsapp: "WhatsApp",
   btn_email: "E-mail",
   btn_call: "Ligar",

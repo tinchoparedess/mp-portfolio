@@ -1,31 +1,49 @@
 "use client";
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { dict, type Lang } from "./dictionaries";
 
-type I18nCtx = {
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import es from "@/i18n/dictionary/es";
+import en from "@/i18n/dictionary/en";
+import pt from "@/i18n/dictionary/pt";
+import it from "@/i18n/dictionary/it";
+
+type Lang = "es" | "en" | "pt" | "it";
+type Dict = typeof es;
+type Ctx = {
   lang: Lang;
   setLang: (l: Lang) => void;
-  t: (key: string) => string;
+  t: (key: keyof Dict | string) => string;
 };
 
-const Ctx = createContext<I18nCtx | null>(null);
+const DICTS: Record<Lang, Dict> = { es, en, pt, it };
+const Ctx = createContext<Ctx | null>(null);
 
 export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<Lang>("es");
 
+  // cargar preferencia guardada
   useEffect(() => {
-    const stored = localStorage.getItem("lang") as Lang | null;
-    if (stored && dict[stored]) setLangState(stored);
+    const saved = (typeof window !== "undefined" && localStorage.getItem("lang")) as Lang | null;
+    if (saved && DICTS[saved]) setLangState(saved);
   }, []);
 
   const setLang = (l: Lang) => {
     setLangState(l);
-    localStorage.setItem("lang", l);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("lang", l);
+      document.documentElement.lang = l;
+      document.documentElement.setAttribute("data-lang", l);
+    }
   };
 
-  const t = (key: string) => dict[lang][key] ?? key;
+  const t = useMemo(() => {
+    return (key: string) => {
+      const d = DICTS[lang] ?? DICTS.es;
+      // @ts-ignore
+      return d[key] ?? DICTS.es[key as keyof Dict] ?? key;
+    };
+  }, [lang]);
 
-  const value = useMemo(() => ({ lang, setLang, t }), [lang]);
+  const value = useMemo(() => ({ lang, setLang, t }), [lang, t]);
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

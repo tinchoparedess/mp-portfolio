@@ -1,26 +1,39 @@
 // src/components/Navbar.tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { AnimatePresence, motion } from "framer-motion";
+import { useI18n } from "@/i18n/I18nProvider";
 
-const LINKS = [
-  { href: "#quien-soy", label: "Quién soy" },
-  { href: "#highlights", label: "Highlights" },
-  { href: "#experiencias", label: "Experiencias" }, // nuevo
-  { href: "#vision", label: "Visión" },
-  { href: "#ideas", label: "Ideas" },
-  { href: "#contacto", label: "Contacto" },
+// claves i18n de cada link
+const NAV_ITEMS = [
+  { href: "#quien-soy", key: "nav_about", fallback: "Quién soy" },
+  { href: "#highlights", key: "nav_highlights", fallback: "Highlights" },
+  { href: "#experiencias", key: "nav_experiencias", fallback: "Experiencias" },
+  { href: "#vision", key: "nav_vision", fallback: "Visión" },
+  { href: "#ideas", key: "nav_ideas", fallback: "Ideas" },
+  { href: "#contacto", key: "nav_contact", fallback: "Contacto" },
 ];
 
 export default function Navbar() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
 
-  // Cerrar al cambiar el hash (navegación interna)
+  // Mapa de labels con fallback (evita ver "nav_*" en pantalla si falta una clave)
+  const labels = useMemo(
+    () =>
+      NAV_ITEMS.map((it) => ({
+        ...it,
+        label: t(it.key) ?? it.fallback,
+      })),
+    [t]
+  );
+
+  // Cerrar al cambiar hash
   useEffect(() => {
     const close = () => setOpen(false);
     window.addEventListener("hashchange", close);
@@ -60,14 +73,12 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
-        {/* IZQUIERDA: theme */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
 
-        {/* CENTRO (desktop) */}
         <nav className="nav-links" aria-label="Secciones">
-          {LINKS.map((l) => (
+          {labels.map((l) => (
             <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
               <span>{l.label}</span>
               <i className="nav-underline" aria-hidden />
@@ -75,7 +86,6 @@ export default function Navbar() {
           ))}
         </nav>
 
-        {/* DERECHA: idioma + hamburguesa */}
         <div className="nav-actions">
           <LanguageSwitcher variant="button" />
           <button
@@ -94,7 +104,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Drawer móvil (animado) */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -107,15 +116,9 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
           >
-            {/* (Quitamos LanguageSwitcher del drawer) */}
             <div className="py-1">
-              {LINKS.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="drawer-link"
-                  onClick={onNav}
-                >
+              {labels.map((l) => (
+                <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
                   {l.label}
                 </Link>
               ))}

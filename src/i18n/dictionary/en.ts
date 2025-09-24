@@ -1,12 +1,12 @@
 const en = {
-  nav_home: "Home",
-  nav_about: "About",
+  nav_about: "About me",
   nav_highlights: "Highlights",
   nav_experiencias: "Experiences",
   nav_vision: "Vision",
   nav_ideas: "Ideas",
   nav_voices: "Close voices",
   nav_contact: "Contact",
+  nav_languages: "Language",
 
   hero_name: "Martín Paredes",
   hero_quote: "Believe big.",
@@ -19,10 +19,20 @@ const en = {
   vision_title: "Vision",
   ideas_title: "Ideas",
   ideas_kicker: "Short aphorisms",
+
   voices_title: "Close voices",
+  voices_kicker: "Messages from people I worked with or shared the road.",
+  gb_name_ph: "Your name",
+  gb_msg_ph: "Your message",
+  gb_publish: "Publish",
+  gb_loading: "Loading…",
+  gb_empty: "No messages yet. Write the first?",
+  gb_delete: "Delete",
+  gb_delete_fail: "Couldn’t delete (wrong token?).",
+  gb_alert_fail: "Couldn’t save. Try again.",
+
   contact_title: "Contact",
   contact_kicker: "If this resonated, let’s talk.",
-
   btn_whatsapp: "WhatsApp",
   btn_email: "Email",
   btn_call: "Call",

@@ -101,5 +101,6 @@ export default function LanguageSwitcher({
         ))}
       </div>
     </div>
+    
   );
 }
