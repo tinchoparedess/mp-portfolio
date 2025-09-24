@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.5.0",
     "@vercel/kv": "^3.0.0",
+    "@vercel/speed-insights": "^1.2.0",
     "framer-motion": "^12.23.12",
     "keen-slider": "^6.8.6",
     "lucide-react": "^0.542.0",

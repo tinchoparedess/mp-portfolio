@@ -3,7 +3,10 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { Playfair_Display, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
+// Fuentes
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
@@ -15,10 +18,7 @@ const inter = Inter({
   display: "swap",
 });
 
-/**
- * Ajustá el dominio si fuese necesario. Según tu plan, el objetivo es:
- * https://martinparedestestti.me
- */
+// Config del sitio
 const site = {
   url: "https://martinparedestestti.me",
   name: "Martín Paredes",
@@ -40,7 +40,6 @@ export const metadata: Metadata = {
     canonical: site.url,
     languages: {
       "es-AR": site.url,
-      // Si en el futuro usás rutas por idioma, acá apuntás a cada una:
       // en: `${site.url}/en`,
       // pt: `${site.url}/pt`,
       // it: `${site.url}/it`,
@@ -77,7 +76,6 @@ export const metadata: Metadata = {
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
     shortcut: ["/favicon.ico"],
   },
-  // Si tenés /site.webmanifest, habilitalo:
   manifest: "/site.webmanifest",
 };
 
@@ -106,17 +104,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable}`}>
-        {/* Provider de idiomas para que useI18n funcione en toda la app */}
         <I18nProvider>
-          {/* Structured Data */}
+          {/* Datos estructurados para SEO */}
           <script
             type="application/ld+json"
-            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
           />
-          {/* Opcional: preload OG si querés evitar primer paint vacío en previews */}
-          {/* <link rel="preload" as="image" href={site.ogImage} /> */}
+
+          {/* Tu aplicación */}
           {children}
+
+          {/* Métricas */}
+          <Analytics />
+          <SpeedInsights />
         </I18nProvider>
       </body>
     </html>
