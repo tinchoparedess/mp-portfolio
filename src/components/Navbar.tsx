@@ -18,12 +18,25 @@ const NAV_ITEMS = [
   { href: "#contacto", key: "nav_contact", fallback: "Contacto" },
 ];
 
+// Hook simple para saber el hash activo con SSR seguro
+function useCurrentHash() {
+  const [hash, setHash] = useState<string>("");
+  useEffect(() => {
+    const read = () => setHash(window.location.hash || "");
+    read();
+    window.addEventListener("hashchange", read);
+    return () => window.removeEventListener("hashchange", read);
+  }, []);
+  return hash;
+}
+
 export default function Navbar() {
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const drawerRef = useRef<HTMLDivElement | null>(null);
+  const currentHash = useCurrentHash();
 
-  // Mapa de labels con fallback (evita ver "nav_*" en pantalla si falta una clave)
+  // Mapa de labels con fallback
   const labels = useMemo(
     () =>
       NAV_ITEMS.map((it) => ({
@@ -73,19 +86,31 @@ export default function Navbar() {
   return (
     <header className="nav-glass">
       <div className="nav-inner">
+        {/* IZQUIERDA */}
         <div className="nav-left">
           <ThemeToggle />
         </div>
 
-        <nav className="nav-links" aria-label="Secciones">
-          {labels.map((l) => (
-            <Link key={l.href} href={l.href} onClick={onNav} className="nav-link">
-              <span>{l.label}</span>
-              <i className="nav-underline" aria-hidden />
-            </Link>
-          ))}
+        {/* CENTRO */}
+        <nav className="nav-links" aria-label="Secciones del sitio">
+          {labels.map((l) => {
+            const isActive = currentHash === l.href;
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                onClick={onNav}
+                className="nav-link"
+                aria-current={isActive ? "page" : undefined}
+              >
+                <span>{l.label}</span>
+                <i className="nav-underline" aria-hidden />
+              </Link>
+            );
+          })}
         </nav>
 
+        {/* DERECHA */}
         <div className="nav-actions">
           <LanguageSwitcher variant="button" />
           <button
@@ -104,6 +129,7 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Drawer móvil */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -116,9 +142,15 @@ export default function Navbar() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
           >
-            <div className="py-1">
+            <div className="py-1" role="menu" aria-label="Navegación móvil">
               {labels.map((l) => (
-                <Link key={l.href} href={l.href} className="drawer-link" onClick={onNav}>
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  className="drawer-link"
+                  onClick={onNav}
+                  role="menuitem"
+                >
                   {l.label}
                 </Link>
               ))}

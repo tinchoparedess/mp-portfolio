@@ -29,7 +29,7 @@ export default function GuestbookSection() {
   };
   const locale = localeMap[lang] ?? "es-AR";
 
-  // helper: usa t(k) y si no existe, cae al fallback
+  // helper t(k) con fallback
   const tr = (k: string, fb: string) => {
     const v = t(k);
     return v && v !== k ? v : fb;
@@ -132,8 +132,11 @@ export default function GuestbookSection() {
         </div>
       </form>
 
-      {/* Lista */}
-      <div className="mx-auto mt-8 max-w-2xl space-y-3 text-left">
+      {/* Lista (con aria-live para feedback accesible) */}
+      <div
+        className="mx-auto mt-8 max-w-2xl space-y-3 text-left"
+        aria-live="polite"
+      >
         {loading && <div className="card">{tr("gb_loading", "Cargando…")}</div>}
         {!loading && entries.length === 0 && (
           <div className="card">
