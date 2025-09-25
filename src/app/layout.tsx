@@ -36,6 +36,16 @@ export const metadata: Metadata = {
     template: "%s — Martín Paredes",
   },
   description: site.description,
+  // SEO extra opcional
+  keywords: [
+    "Martín Paredes",
+    "hospitalidad",
+    "viajes",
+    "elegancia funcional",
+    "portfolio",
+    "Cortina d'Ampezzo",
+    "turismo",
+  ],
   alternates: {
     canonical: site.url,
     languages: {
@@ -108,12 +118,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {/* Datos estructurados para SEO */}
           <script
             type="application/ld+json"
+            // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }}
           />
-
-          {/* Tu aplicación */}
+          {/* App */}
           {children}
-
           {/* Métricas */}
           <Analytics />
           <SpeedInsights />

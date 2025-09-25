@@ -487,3 +487,12 @@ html.dark .text-muted-foreground{ color: var(--muted-d); }
   hyphens: auto;
   overflow-wrap: anywhere;
 }
+/* Reduce motion: desactiva animaciones grandes para quien lo elige */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+    scroll-behavior: auto !important;
+  }
+}
