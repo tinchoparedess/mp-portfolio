@@ -1,6 +1,7 @@
 // src/components/GuestbookSection.tsx
 "use client";
-import { useEffect, useState } from "react";
+
+import { useEffect, useState, useMemo } from "react";
 import Reveal from "@/components/Reveal";
 import { useI18n } from "@/i18n/I18nProvider";
 
@@ -14,6 +15,8 @@ export default function GuestbookSection() {
   const [posting, setPosting] = useState(false);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  // Honeypot anti-spam (bots suelen completarlo)
+  const [website, setWebsite] = useState("");
 
   // Admin por query ?admin=1
   const isAdmin =
@@ -21,13 +24,10 @@ export default function GuestbookSection() {
     new URLSearchParams(location.search).get("admin") === "1";
 
   // Mapea lang a locale para fechas
-  const localeMap: Record<string, string> = {
-    es: "es-AR",
-    en: "en",
-    pt: "pt-BR",
-    it: "it",
-  };
-  const locale = localeMap[lang] ?? "es-AR";
+  const locale = useMemo(() => {
+    const map: Record<string, string> = { es: "es-AR", en: "en", pt: "pt-BR", it: "it" };
+    return map[lang] ?? "es-AR";
+  }, [lang]);
 
   // helper t(k) con fallback
   const tr = (k: string, fb: string) => {
@@ -41,6 +41,8 @@ export default function GuestbookSection() {
       const res = await fetch("/api/guestbook");
       const data = await res.json();
       setEntries(data?.items ?? []);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -50,24 +52,35 @@ export default function GuestbookSection() {
     load();
   }, []);
 
+  const canSubmit =
+    !posting && name.trim().length > 0 && message.trim().length > 0 && website === "";
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!name.trim() || !message.trim() || posting) return;
+    if (!canSubmit) return;
 
     try {
       setPosting(true);
+
+      // si honeypot tiene valor, ignoramos (probable bot)
+      if (website) return;
+
       const res = await fetch("/api/guestbook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name: name.trim(), message: message.trim() }),
       });
-      if (res.ok) {
-        setName("");
-        setMessage("");
-        load();
-      } else {
-        alert(tr("gb_alert_fail", "No se pudo guardar. Probá de nuevo."));
+
+      if (!res.ok) {
+        throw new Error("Request failed");
       }
+
+      setName("");
+      setMessage("");
+      await load();
+    } catch (err) {
+      console.error(err);
+      alert(tr("gb_alert_fail", "No se pudo guardar. Probá de nuevo."));
     } finally {
       setPosting(false);
     }
@@ -76,13 +89,18 @@ export default function GuestbookSection() {
   async function onDelete(id: string) {
     const token = prompt("Token de admin:");
     if (!token) return;
-    const res = await fetch("/api/guestbook", {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ id }),
-    });
-    if (res.ok) load();
-    else alert(tr("gb_delete_fail", "No se pudo borrar (token incorrecto?)."));
+    try {
+      const res = await fetch("/api/guestbook", {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) load();
+      else alert(tr("gb_delete_fail", "No se pudo borrar (token incorrecto?)."));
+    } catch (err) {
+      console.error(err);
+      alert(tr("gb_delete_fail", "No se pudo borrar (token incorrecto?)."));
+    }
   }
 
   return (
@@ -100,7 +118,7 @@ export default function GuestbookSection() {
       </Reveal>
 
       {/* Formulario */}
-      <form onSubmit={onSubmit} className="mx-auto mt-6 max-w-xl panel text-left">
+      <form onSubmit={onSubmit} className="mx-auto mt-6 max-w-xl panel text-left" noValidate>
         <div className="grid gap-3 sm:grid-cols-3">
           <input
             className="pill sm:col-span-1"
@@ -109,6 +127,8 @@ export default function GuestbookSection() {
             onChange={(e) => setName(e.target.value)}
             name="name"
             maxLength={80}
+            required
+            autoComplete="name"
             aria-label={tr("gb_name_ph", "Tu nombre")}
           />
           <input
@@ -118,14 +138,27 @@ export default function GuestbookSection() {
             onChange={(e) => setMessage(e.target.value)}
             name="message"
             maxLength={280}
+            required
             aria-label={tr("gb_msg_ph", "Tu mensaje")}
+          />
+          {/* Honeypot oculto (no estilizar) */}
+          <input
+            type="text"
+            name="website"
+            value={website}
+            onChange={(e) => setWebsite(e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", width: 1, height: 1 }}
           />
         </div>
         <div className="mt-4 text-right">
           <button
             type="submit"
             className="btn btn-ghost btn-gold"
-            disabled={posting}
+            disabled={!canSubmit}
+            aria-busy={posting}
           >
             {posting ? tr("gb_sending", "Enviando…") : tr("gb_publish", "Publicar")}
           </button>
@@ -133,10 +166,7 @@ export default function GuestbookSection() {
       </form>
 
       {/* Lista (con aria-live para feedback accesible) */}
-      <div
-        className="mx-auto mt-8 max-w-2xl space-y-3 text-left"
-        aria-live="polite"
-      >
+      <div className="mx-auto mt-8 max-w-2xl space-y-3 text-left" aria-live="polite">
         {loading && <div className="card">{tr("gb_loading", "Cargando…")}</div>}
         {!loading && entries.length === 0 && (
           <div className="card">
