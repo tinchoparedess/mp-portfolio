@@ -1,38 +1,42 @@
 const en = {
-  nav_about: "About me",
+  // Nav
+  nav_about: "About",
   nav_highlights: "Highlights",
   nav_experiencias: "Experiences",
   nav_vision: "Vision",
   nav_ideas: "Ideas",
-  nav_voices: "Close voices",
   nav_contact: "Contact",
-  nav_languages: "Language",
 
+  // Hero
   hero_name: "Martín Paredes",
   hero_quote: "Believe big.",
   hero_connect: "Contact",
   hero_more: "Learn more",
 
-  who_title: "About me",
+  // Sections
+  who_title: "Who I am",
   high_title: "Highlights",
   high_kicker: "Strengths in a few words",
   vision_title: "Vision",
   ideas_title: "Ideas",
   ideas_kicker: "Short aphorisms",
+  contact_title: "Contact",
+  contact_kicker: "If this resonated, let’s talk.",
 
+  // Voices (Guestbook)
   voices_title: "Close voices",
-  voices_kicker: "Messages from people I worked with or shared the road.",
+  voices_kicker: "Messages from people I worked or traveled with.",
   gb_name_ph: "Your name",
   gb_msg_ph: "Your message",
   gb_publish: "Publish",
+  gb_sending: "Sending…",
   gb_loading: "Loading…",
-  gb_empty: "No messages yet. Write the first?",
+  gb_empty: "No messages yet. Will you write the first?",
   gb_delete: "Delete",
   gb_delete_fail: "Couldn’t delete (wrong token?).",
   gb_alert_fail: "Couldn’t save. Try again.",
 
-  contact_title: "Contact",
-  contact_kicker: "If this resonated, let’s talk.",
+  // Footer / Buttons
   btn_whatsapp: "WhatsApp",
   btn_email: "Email",
   btn_call: "Call",

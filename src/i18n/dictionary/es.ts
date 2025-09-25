@@ -5,9 +5,7 @@ const es = {
   nav_experiencias: "Experiencias",
   nav_vision: "Visión",
   nav_ideas: "Ideas",
-  nav_voices: "Voces cercanas",
   nav_contact: "Contacto",
-  nav_languages: "Idioma",
 
   // Hero
   hero_name: "Martín Paredes",
@@ -22,22 +20,23 @@ const es = {
   vision_title: "Visión",
   ideas_title: "Ideas",
   ideas_kicker: "Aforismos breves",
+  contact_title: "Contacto",
+  contact_kicker: "Si esto te resonó, hablemos.",
 
-  // Voces
+  // Voces cercanas (Guestbook)
   voices_title: "Voces cercanas",
   voices_kicker: "Mensajes de personas con las que trabajé o compartí camino.",
   gb_name_ph: "Tu nombre",
   gb_msg_ph: "Tu mensaje",
   gb_publish: "Publicar",
+  gb_sending: "Enviando…",
   gb_loading: "Cargando…",
   gb_empty: "Aún no hay mensajes. ¿Escribís el primero?",
   gb_delete: "Borrar",
   gb_delete_fail: "No se pudo borrar (token incorrecto?).",
   gb_alert_fail: "No se pudo guardar. Probá de nuevo.",
 
-  // Contacto
-  contact_title: "Contacto",
-  contact_kicker: "Si esto te resonó, hablemos.",
+  // Footer / Botones
   btn_whatsapp: "WhatsApp",
   btn_email: "Email",
   btn_call: "Llamar",

@@ -496,3 +496,50 @@ html.dark .text-muted-foreground{ color: var(--muted-d); }
     scroll-behavior: auto !important;
   }
 }
+/* === Navegación & anclajes (no quedar tapado por la navbar) === */
+.section {
+  scroll-margin-top: 84px; /* ajusta según la altura real de tu navbar */
+}
+
+/* === Foco visible para teclado === */
+.nav-link:focus-visible,
+.drawer-link:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--gold-1, #c6a760);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* === Estado activo del ítem de menú (cuando el hash coincide) === */
+.nav-link[aria-current="page"] {
+  opacity: 1;
+}
+.nav-link[aria-current="page"] .nav-underline {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* Subtil: los links no activos un pelín más suaves (si tu diseño lo permite) */
+.nav-link {
+  opacity: 0.9;
+}
+.nav-link:hover { opacity: 1; }
+
+/* === Guestbook: área de feedback accesible === */
+[aria-live="polite"] .card {
+  /* nada intrusivo; solo aseguramos que el contenedor existe y no colapsa */
+  min-height: 2.5rem;
+}
+
+/* === Respeto a usuarios con 'prefiere reducir movimiento' === */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within { scroll-behavior: auto; }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

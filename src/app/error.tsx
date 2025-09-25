@@ -1,6 +1,8 @@
 // src/app/error.tsx
 "use client";
 
+import Link from "next/link";
+
 export default function GlobalError({
   error,
   reset,
@@ -8,16 +10,22 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  console.error(error);
   return (
-    <main className="section container-pro text-center">
-      <h1 className="section-title underline">Algo salió mal</h1>
-      <p className="kicker">Hubo un error inesperado.</p>
-      <div className="mt-6 flex justify-center gap-3">
-        <button onClick={() => reset()} className="btn btn-ghost btn-gold">
+    <main className="section text-center flex flex-col items-center justify-center min-h-[60vh]">
+      <h1 className="text-3xl font-bold mb-4">Algo salió mal</h1>
+      <p className="text-lg text-muted-foreground mb-6">
+        Hubo un error inesperado. Intenta refrescar la página o volver al inicio.
+      </p>
+      <div className="flex gap-3">
+        <button
+          onClick={() => reset()}
+          className="btn btn-ghost btn-gold"
+        >
           Reintentar
         </button>
-        <a href="/" className="btn btn-ghost">Ir al inicio</a>
+        <Link href="/" className="btn btn-ghost">
+          Inicio
+        </Link>
       </div>
     </main>
   );

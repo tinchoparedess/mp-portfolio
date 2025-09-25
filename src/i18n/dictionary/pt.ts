@@ -1,41 +1,45 @@
 const pt = {
+  // Nav
   nav_about: "Quem sou",
   nav_highlights: "Destaques",
   nav_experiencias: "Experiências",
   nav_vision: "Visão",
   nav_ideas: "Ideias",
-  nav_voices: "Vozes próximas",
   nav_contact: "Contato",
-  nav_languages: "Idioma",
 
+  // Hero
   hero_name: "Martín Paredes",
   hero_quote: "Acredite em grande.",
   hero_connect: "Contato",
   hero_more: "Saber mais",
 
+  // Seções
   who_title: "Quem sou",
   high_title: "Destaques",
-  high_kicker: "Forças em poucas palavras",
+  high_kicker: "Fortalezas em poucas palavras",
   vision_title: "Visão",
   ideas_title: "Ideias",
-  ideas_kicker: "Aforismos curtos",
+  ideas_kicker: "Aforismos breves",
+  contact_title: "Contato",
+  contact_kicker: "Se isso ressoou, vamos conversar.",
 
+  // Vozes (Guestbook)
   voices_title: "Vozes próximas",
   voices_kicker: "Mensagens de pessoas com quem trabalhei ou caminhei junto.",
   gb_name_ph: "Seu nome",
   gb_msg_ph: "Sua mensagem",
   gb_publish: "Publicar",
+  gb_sending: "Enviando…",
   gb_loading: "Carregando…",
   gb_empty: "Ainda não há mensagens. Escreve a primeira?",
   gb_delete: "Excluir",
   gb_delete_fail: "Não foi possível excluir (token incorreto?).",
   gb_alert_fail: "Não foi possível salvar. Tente de novo.",
 
-  contact_title: "Contato",
-  contact_kicker: "Se isso ressoou, vamos conversar.",
+  // Footer / Botões
   btn_whatsapp: "WhatsApp",
-  btn_email: "E-mail",
+  btn_email: "Email",
   btn_call: "Ligar",
-  footer: "© 2025. Feito com cuidado e clareza.",
+  footer: "© 2025. Feito com critério e calma.",
 };
 export default pt;
