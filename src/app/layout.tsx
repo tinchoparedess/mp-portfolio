@@ -22,7 +22,7 @@ const inter = Inter({
 const site = {
   url: "https://martinparedestestti.me",
   name: "Martín Paredes",
-  title: "Martín Paredes Testti",
+  title: "[Chek-In] - Martín.",
   description:
     "Piensa en grande, cree en grande. Elegancia funcional, precisión y calidez al servicio de lo esencial.",
   ogImage: "/og.jpg",
