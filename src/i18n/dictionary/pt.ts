@@ -9,9 +9,9 @@ const pt = {
 
   // Hero
   hero_name: "Martín Paredes",
-  hero_quote: "Acredite em grande.",
-  hero_connect: "Contato",
-  hero_more: "Saber mais",
+  hero_quote: "Elegância funcional. Viagens, visão e criação.",
+  hero_connect: "Conectar",
+  hero_more: "Explorar",
 
   // Seções
   who_title: "Quem sou",
@@ -21,7 +21,7 @@ const pt = {
   ideas_title: "Ideias",
   ideas_kicker: "Aforismos breves",
   contact_title: "Contato",
-  contact_kicker: "Se isso ressoou, vamos conversar.",
+  contact_kicker: "Se algo que você viu ressoou, vamos nos conectar.",
 
   // Vozes (Guestbook)
   voices_title: "Vozes próximas",
@@ -31,7 +31,7 @@ const pt = {
   gb_publish: "Publicar",
   gb_sending: "Enviando…",
   gb_loading: "Carregando…",
-  gb_empty: "Ainda não há mensagens. Escreve a primeira?",
+  gb_empty: "Ainda não há mensagens. Você escreve a primeira?",
   gb_delete: "Excluir",
   gb_delete_fail: "Não foi possível excluir (token incorreto?).",
   gb_alert_fail: "Não foi possível salvar. Tente de novo.",
@@ -40,6 +40,6 @@ const pt = {
   btn_whatsapp: "WhatsApp",
   btn_email: "Email",
   btn_call: "Ligar",
-  footer: "© 2025. Feito com critério e calma.",
+  footer: "Com base na Itália · ES/EN/PT/IT · © 2025.",
 };
 export default pt;

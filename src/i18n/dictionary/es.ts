@@ -9,9 +9,9 @@ const es = {
 
   // Hero
   hero_name: "Martín Paredes",
-  hero_quote: "Creer en grande.",
-  hero_connect: "Contacto",
-  hero_more: "Conocer más",
+  hero_quote: "Elegancia funcional. Viajes, visión y creación.",
+  hero_connect: "Conectar",
+  hero_more: "Explorar",
 
   // Secciones
   who_title: "Quién soy",
@@ -21,7 +21,7 @@ const es = {
   ideas_title: "Ideas",
   ideas_kicker: "Aforismos breves",
   contact_title: "Contacto",
-  contact_kicker: "Si esto te resonó, hablemos.",
+  contact_kicker: "Si algo de lo que viste resuena, conectemos.",
 
   // Voces cercanas (Guestbook)
   voices_title: "Voces cercanas",
@@ -40,6 +40,6 @@ const es = {
   btn_whatsapp: "WhatsApp",
   btn_email: "Email",
   btn_call: "Llamar",
-  footer: "© 2025. Hecho con criterio y calma.",
+  footer: "Con base en Italia · ES/EN/PT/IT · © 2025.",
 };
 export default es;

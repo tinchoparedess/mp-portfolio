@@ -10,13 +10,13 @@ import { useI18n } from "@/i18n/I18nProvider";
 /* ===================== DESCRIPCIONES POR IDIOMA ===================== */
 const descByLang: Record<string, Record<string, string>> = {
   es: {
-    cortina: "Un año en la montaña. Precisión, ritmo y elegancia alpina.",
-    iran: "Veinte días viajando en bus, té y poesía persa. Un baño espiritual.",
-    balcanes: "Albania, Montenegro y Bosnia: caminos salvajes y hospitalidad cruda.",
-    republicadominicana: "Tres meses recorriendo la isla en autoestop. Caribe profundo.",
-    argentina: "El país entero a dedo. Conexión con lo simple y la aventura pura.",
-    brasil: "Aprendí portugués, hice amigos y cambié mi forma de ver la vida.",
-    chile: "Mi primer viaje en solitario, el comienzo de todo.",
+    cortina: "Un año entre montañas. Precisión y ritmo, con la elegancia alpina como escuela.",
+    iran: "Veinte días de té, poesía persa y desiertos infinitos. Un baño espiritual.",
+    balcanes: "Albania, Montenegro y Bosnia. Caminos salvajes, hospitalidad cruda.",
+    republicadominicana: "Tres meses a dedo por la isla. Caribe profundo, sin filtros.",
+    argentina: "El país entero a dedo. Conexión con lo simple, aventura pura.",
+    brasil: "Aprendí portugués, hice amigos y cambié mi manera de ver la vida.",
+    chile: "Mi primer viaje en solitario. El inicio de todo.",
   },
   en: {
     cortina: "A year in the mountains. Precision, pace, alpine elegance.",
@@ -157,11 +157,9 @@ function ExpCard({
               <div className="relative w-full aspect-[3/4] sm:aspect-[4/3]">
                 <Image
                   src={src}
-                  alt=""
+                  alt={`${titulo} — foto ${i + 1}`}
                   fill
-                  // tamaños realistas: móvil 100vw, tablet 50vw, desktop ~480px
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 480px"
-                  // Solo el primer slide del primer card es prioridad (LCP)
                   priority={!!eager && i === 0}
                   fetchPriority={eager && i === 0 ? "high" : "auto"}
                   placeholder="blur"

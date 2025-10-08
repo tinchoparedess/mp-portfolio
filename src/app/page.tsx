@@ -2,7 +2,7 @@
 
 import Navbar from "@/components/Navbar";
 import { useI18n } from "@/i18n/I18nProvider";
-import GuestbookSection from "@/components/GuestbookSection";
+// import GuestbookSection from "@/components/GuestbookSection"; // Oculto temporalmente
 import Experiencias from "@/components/Experiencias";
 import ValueList from "@/components/ValueList";
 import Reveal from "@/components/Reveal";
@@ -10,6 +10,12 @@ import { useMemo } from "react";
 
 export default function Page() {
   const { t, lang } = useI18n(); // "es" | "en" | "pt" | "it"
+
+  // helper: traducción con fallback
+  const tr = (k: string, fb: string) => {
+    const v = t(k);
+    return v && v !== k ? v : fb;
+  };
 
   // WhatsApp message por idioma
   const waText = useMemo(() => {
@@ -128,15 +134,17 @@ export default function Page() {
         {/* HERO */}
         <section id="hero" className="section text-center">
           <div className="panel panel-hero mx-auto max-w-3xl">
-            <h1 className="hero-title">{t("hero_name")}</h1>
-            <p className="kicker">{t("hero_quote")}</p>
+            <h1 className="hero-title">{tr("hero_name", "Martín Paredes")}</h1>
+            <p className="kicker">
+              {tr("hero_quote", "Elegancia funcional. Viajes, visión y creación.")}
+            </p>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
               <a href="#contacto" className="btn btn-primary">
-                <span>{t("hero_connect")}</span>
+                <span>{tr("hero_connect", "Conectar")}</span>
               </a>
               <a href="#quien-soy" className="btn btn-ghost btn-gold">
-                <span>{t("hero_more")}</span>
+                <span>{tr("hero_more", "Explorar")}</span>
               </a>
             </div>
           </div>
@@ -189,15 +197,17 @@ export default function Page() {
           </div>
         </section>
 
-        {/* VOCES CERCANAS — solo el componente (sin cabecera duplicada) */}
-        <GuestbookSection />
+        {/* VOCES CERCANAS — oculto temporalmente hasta tener 2–3 testimonios reales */}
+        {/* <GuestbookSection /> */}
 
         {/* CONTACTO */}
         <section id="contacto" className="section text-center">
           <Reveal as="h2" className="section-title underline">
             {t("contact_title")}
           </Reveal>
-          <p className="kicker">{t("contact_kicker")}</p>
+          <p className="kicker">
+            {tr("contact_kicker", "Si algo de lo que viste resuena, conectemos.")}
+          </p>
 
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
             {/* WhatsApp */}
@@ -235,7 +245,9 @@ export default function Page() {
           </div>
         </section>
 
-        <footer className="footer">{t("footer")}</footer>
+        <footer className="footer">
+          {tr("footer", "Con base en Italia · ES/EN/PT/IT")}
+        </footer>
       </main>
     </>
   );
