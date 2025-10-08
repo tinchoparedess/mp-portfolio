@@ -52,12 +52,24 @@ function AutoPlay(slider: any, interval = 3500) {
   let mouseOver = false;
   const clear = () => timer && clearTimeout(timer);
   const next = () => !mouseOver && slider.next();
-  const start = () => { clear(); timer = setTimeout(next, interval); };
+  const start = () => {
+    clear();
+    timer = setTimeout(next, interval);
+  };
 
   slider.on("created", () => {
-    slider.container.addEventListener("mouseenter", () => { mouseOver = true; clear(); });
-    slider.container.addEventListener("mouseleave", () => { mouseOver = false; start(); });
-    document.addEventListener("visibilitychange", () => { if (document.hidden) clear(); else start(); });
+    slider.container.addEventListener("mouseenter", () => {
+      mouseOver = true;
+      clear();
+    });
+    slider.container.addEventListener("mouseleave", () => {
+      mouseOver = false;
+      start();
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) clear();
+      else start();
+    });
     start();
   });
   slider.on("dragStarted", clear);
@@ -71,23 +83,56 @@ const BLUR =
 
 export default function Experiencias() {
   const { t, lang } = useI18n();
-  const get = (key: string) => (descByLang[lang] ?? descByLang.es)[key] ?? descByLang.es[key];
+  const get = (key: string) =>
+    (descByLang[lang] ?? descByLang.es)[key] ?? descByLang.es[key];
 
   const EXPERIENCIAS = [
-    { lugar: "Cortina d’Ampezzo", key: "cortina", bandera: "🇮🇹",
-      fotos: ["/exp/cortina1.jpg","/exp/cortina2.jpg","/exp/cortina3.jpg"] },
-    { lugar: "Irán", key: "iran", bandera: "🇮🇷",
-      fotos: ["/exp/iran1.jpg","/exp/iran2.jpg","/exp/iran3.jpg"] },
-    { lugar: "Balcanes", key: "balcanes", bandera: "🇦🇱🇲🇪🇧🇦",
-      fotos: ["/exp/balcanes1.jpg","/exp/balcanes2.jpg","/exp/balcanes3.jpg"] },
-    { lugar: "República Dominicana", key: "republicadominicana", bandera: "🇩🇴",
-      fotos: ["/exp/republicadominicana1.jpg","/exp/republicadominicana2.jpg","/exp/republicadominicana3.jpg"] },
-    { lugar: "Argentina", key: "argentina", bandera: "🇦🇷",
-      fotos: ["/exp/argentina1.jpg","/exp/argentina2.jpg","/exp/argentina3.jpg"] },
-    { lugar: "Brasil", key: "brasil", bandera: "🇧🇷",
-      fotos: ["/exp/brasil1.jpg","/exp/brasil2.jpg","/exp/brasil3.jpg"] },
-    { lugar: "Chile", key: "chile", bandera: "🇨🇱",
-      fotos: ["/exp/chile1.jpg","/exp/chile2.jpg","/exp/chile3.jpg"] },
+    {
+      lugar: "Cortina d’Ampezzo",
+      key: "cortina",
+      bandera: "🇮🇹",
+      fotos: ["/exp/cortina1.jpg", "/exp/cortina2.jpg", "/exp/cortina3.jpg"],
+    },
+    {
+      lugar: "Irán",
+      key: "iran",
+      bandera: "🇮🇷",
+      fotos: ["/exp/iran1.jpg", "/exp/iran2.jpg", "/exp/iran3.jpg"],
+    },
+    {
+      lugar: "Balcanes",
+      key: "balcanes",
+      bandera: "🇦🇱🇲🇪🇧🇦",
+      fotos: ["/exp/balcanes1.jpg", "/exp/balcanes2.jpg", "/exp/balcanes3.jpg"],
+    },
+    {
+      lugar: "República Dominicana",
+      key: "republicadominicana",
+      bandera: "🇩🇴",
+      fotos: [
+        "/exp/republicadominicana1.jpg",
+        "/exp/republicadominicana2.jpg",
+        "/exp/republicadominicana3.jpg",
+      ],
+    },
+    {
+      lugar: "Argentina",
+      key: "argentina",
+      bandera: "🇦🇷",
+      fotos: ["/exp/argentina1.jpg", "/exp/argentina2.jpg", "/exp/argentina3.jpg"],
+    },
+    {
+      lugar: "Brasil",
+      key: "brasil",
+      bandera: "🇧🇷",
+      fotos: ["/exp/brasil1.jpg", "/exp/brasil2.jpg", "/exp/brasil3.jpg"],
+    },
+    {
+      lugar: "Chile",
+      key: "chile",
+      bandera: "🇨🇱",
+      fotos: ["/exp/chile1.jpg", "/exp/chile2.jpg", "/exp/chile3.jpg"],
+    },
   ];
 
   return (
@@ -131,8 +176,12 @@ function ExpCard({
       loop: true,
       renderMode: "precision",
       slides: { perView: 1 },
-      slideChanged(s) { setCurrent(s.track.details.rel); },
-      created(s) { setCurrent(s.track.details.rel); },
+      slideChanged(s) {
+        setCurrent(s.track.details.rel);
+      },
+      created(s) {
+        setCurrent(s.track.details.rel);
+      },
     },
     [(s) => AutoPlay(s, 3500)]
   );
@@ -177,7 +226,10 @@ function ExpCard({
           className="absolute left-2 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-9 h-9 rounded-full border border-white/15 bg-white/8 dark:bg-white/5 backdrop-blur hover:bg-white/15"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="M15.5 5.5 9 12l6.5 6.5-1.4 1.4L6.2 12l7.9-7.9 1.4 1.4Z"/>
+            <path
+              fill="currentColor"
+              d="M15.5 5.5 9 12l6.5 6.5-1.4 1.4L6.2 12l7.9-7.9 1.4 1.4Z"
+            />
           </svg>
         </button>
         <button
@@ -186,7 +238,10 @@ function ExpCard({
           className="absolute right-2 top-1/2 -translate-y-1/2 z-10 grid place-items-center w-9 h-9 rounded-full border border-white/15 bg-white/8 dark:bg-white/5 backdrop-blur hover:bg-white/15"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-            <path fill="currentColor" d="m8.5 5.5 1.4-1.4L17.8 12l-7.9 7.9-1.4-1.4L14 12 8.5 6.5Z"/>
+            <path
+              fill="currentColor"
+              d="m8.5 5.5 1.4-1.4L17.8 12l-7.9 7.9-1.4-1.4L14 12 8.5 6.5Z"
+            />
           </svg>
         </button>
 
